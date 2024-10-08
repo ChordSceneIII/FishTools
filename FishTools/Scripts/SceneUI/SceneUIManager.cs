@@ -166,7 +166,7 @@ namespace SceneUITool
 
             if (thisDragHandler != null)
             {
-                thisDragHandler.Drag(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                thisDragHandler.Drag();
             }
 
             if (Input.GetMouseButtonUp(0))

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FishTools;
+using FishToolsEditor;
 
 /// <summary>
 /// 动态UI管理器
@@ -10,11 +11,13 @@ namespace EasyUI
 {
     public class UIManager_develop : BaseSingletonMono<UIManager_develop>
     {
-        //路径
+        //资源路径
         internal Dictionary<string, string> pathDict = new Dictionary<string, string>();
-        //预制件
+
+        //预制件内存
         internal Dictionary<string, GameObject> prefabDict = new Dictionary<string, GameObject>();
-        //已打开界面缓存
+
+        //已打开界面缓存引用
         internal Dictionary<string, BasePanel> panelDict = new Dictionary<string, BasePanel>();
 
         //根节点定义 用于定位UI预制体的父对象位置
@@ -36,45 +39,42 @@ namespace EasyUI
         {
             base.Awake();
             DontDestroyOnLoad(this.gameObject);
-            LoadPath();
+            LoadPath<FollowPanel>();
+            LoadPath<DefaultPanel>();
         }
         //加载资源路径
-        void LoadPath()
+        void LoadPath<T>() where T : BasePanel
         {
-            var datas = Resources.LoadAll<BasePanelData>("");
+            var datas = Resources.LoadAll<BasePanelData<T>>("");
             foreach (var data in datas)
             {
                 data?.AddToPathDict();
             }
         }
 
-        //打开界面
-        public BasePanel OpenPanel(string name)
+        //获取预制件存到内存中
+        public GameObject TryGetPrefab(string name)
         {
-            //检查已打开页面缓存
-            if (panelDict.TryGetValue(name, out var panel))
-            {
-                Debug.LogWarning("界面已打开:" + name);
-                //返回该界面
-                return panel;
-            }
-
             //检查路径缓存
             if (!pathDict.TryGetValue(name, out var path))
             {
-                Debug.LogError("界面名称错误，或未配置路径:" + name);
+                DebugEditor.LogError("界面名称错误，或未配置路径:" + name);
                 return null;
             }
 
-            //从缓存中加载预制件(避免反复使用Resources进行资源读取)
+            //加载资源到内存中
             if (!prefabDict.TryGetValue(name, out var panelPrefab))
             {
                 try
                 {
+                    /// <summary>
+                    /// 路径读取关键：{path}位置于PanelData中自动获取,前提是必须是Resources目录下
+                    /// </summary>
                     panelPrefab = Resources.Load<GameObject>(path);
+
                     if (panelPrefab == null)
                     {
-                        Debug.LogError("无法加载预制件:" + path);
+                        DebugEditor.LogError("无法加载预制件,请检查路径是否正确:" + path);
                         return null;
                     }
 
@@ -83,33 +83,53 @@ namespace EasyUI
                 }
                 catch (System.Exception ex)
                 {
-                    Debug.LogError("加载预制件失败: " + path + "\n" + ex.Message);
+                    DebugEditor.LogError("加载预制件失败: " + path + "\n" + ex.Message);
                     return null;
                 }
             }
 
-            //尝试打开界面
-            try
+            return panelPrefab;
+        }
+
+        //打开界面
+        public BasePanel OpenPanel(string name)
+        {
+            //检查已打开页面缓存
+            if (panelDict.TryGetValue(name, out var panel))
+            {
+                DebugEditor.LogWarning("界面已打开:" + name);
+                //返回该界面
+                return panel;
+            }
+
+            //读取预制件内存
+            var panelPrefab = TryGetPrefab(name);
+
+            //从内存中加载界面
+            if (panelPrefab != null)
             {
                 GameObject panelObject = GameObject.Instantiate(panelPrefab, UIRoot, false);
+
                 panel = panelObject.GetComponent<BasePanel>();
                 if (panel == null)
                 {
-                    Debug.LogError("预制件上没有找到 BasePanel 组件:" + name);
+                    DebugEditor.LogError("预制件上没有找到 BasePanel 组件:" + name);
                     Destroy(panelObject);
                     return null;
                 }
 
                 //加入到缓存路径，表示已经显示的界面
                 panelDict.Add(name, panel);
+
+                DebugEditor.Log(panel.GetInstanceID());
+                DebugEditor.Log(panel.gameObject.GetInstanceID());
+
                 return panel;
             }
-            catch (System.Exception ex)
+            else
             {
-                Debug.LogError("打开界面失败: " + name + "\n" + ex.Message);
                 return null;
             }
-
         }
 
         //关闭界面
@@ -126,7 +146,7 @@ namespace EasyUI
             }
 
             //界面未打开,警告
-            Debug.LogWarning("界面未打开:" + name);
+            DebugEditor.LogWarning("界面未打开:" + name);
             return false;
         }
 

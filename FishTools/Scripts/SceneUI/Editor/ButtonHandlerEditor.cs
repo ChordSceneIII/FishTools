@@ -9,7 +9,7 @@ using UnityEngine;
 namespace SceneUITool
 {
     [CustomEditor(typeof(ButtonHandler), true)]
-    public class ButtonHandlerEditor : Editor
+    public class ButtonHandlerEditor : BaseUIHandlerEditor
     {
         private ButtonHandler mobj;
         private SerializedProperty orignalSpriteProperty;
@@ -61,6 +61,7 @@ namespace SceneUITool
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
             serializedObject.Update();
             EditorGUILayout.PropertyField(orignalSpriteProperty, new GUIContent("目标渲染器"));
             mobj.transitionType = (ButtonHandler.TransitionType)EditorGUILayout.EnumPopup("过渡", mobj.transitionType);

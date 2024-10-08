@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 /// <summary>
-/// 只读，使用public加该特性生效,带SerializedField的字段无效
+/// 只读,编辑器中无法编辑
 /// </summary>
 
 namespace FishToolsEditor

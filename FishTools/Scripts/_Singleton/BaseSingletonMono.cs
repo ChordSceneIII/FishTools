@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Mono自动单例
+/// Mono自动单例  (外部脚本不要再Awake中去拿单例Instance)
+/// 不推荐在层级中主动去挂载该脚本,这类单例脚本适用于单例管理器中
 /// </summary>
 namespace FishTools
 {
@@ -37,9 +38,10 @@ namespace FishTools
 
         public virtual T Initializer(string name)
         {
-            Instance.gameObject.name =name;
+            Instance.gameObject.name = name;
             return Instance;
         }
+
 
         //预防重复创建单例,并销毁多余实例
         protected virtual void Awake()

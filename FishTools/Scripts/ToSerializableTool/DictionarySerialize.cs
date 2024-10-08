@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FishToolsEditor;
 using UnityEngine;
 
 /// <summary>
@@ -50,9 +51,7 @@ namespace FishTools
                 if (!keySet.Add(pair.key))
                 {
                     // 发现重复的键，提示用户
-#if UNITY_EDITOR
-                    Debug.LogError($"Duplicate key detected during serialization: {pair.key}");
-#endif
+                    DebugEditor.LogError($"key重复{pair.key}");
                     hasDuplicates = true;
                 }
             }
@@ -68,9 +67,7 @@ namespace FishTools
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.LogError("Cannot serialize because duplicate keys were found.");
-#endif
+                DebugEditor.LogError("无法同步到实际字典，序列化列表中中存在重复的键");
             }
         }
 
@@ -79,6 +76,7 @@ namespace FishTools
             SyncDictionaryData();
         }
 
+        // 同步序列化列表
         private void SyncSerializableData()
         {
             _pairs.Clear();
@@ -88,6 +86,7 @@ namespace FishTools
             }
         }
 
+        // 同步实际字典
         private void SyncDictionaryData()
         {
             _dict.Clear();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FishToolsEditor;
 using UnityEngine;
 
 /// <summary>
@@ -60,9 +61,7 @@ namespace ActionSystem
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.LogWarning($"{this}: {command} is not found!");
-#endif
+                DebugEditor.LogWarning($"{this}: {command} is not found!");
             }
         }
 
@@ -81,17 +80,13 @@ namespace ActionSystem
                     return cmd as T;
                 else
                 {
-#if UNITY_EDITOR
-                    Debug.LogWarning($"{this}: {command} is not {typeof(T)}!");
-#endif
+                    DebugEditor.LogWarning($"{this}: {command} is not {typeof(T)}!");
                     return null;
                 }
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.LogWarning($"{this}: {command} is not found!");
-#endif
+                DebugEditor.LogWarning($"{this}: {command} is not found!");
                 return null;
             }
         }

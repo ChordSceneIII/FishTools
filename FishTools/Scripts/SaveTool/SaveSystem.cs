@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using FishToolsEditor;
 
 /// <summary>
 /// 存档系统底层逻辑，通常需要创建一个SaveManager来管理存档的配置相关
@@ -17,16 +18,12 @@ namespace FishTools
             try
             {
                 File.WriteAllText(path, json);
-#if UNITY_EDITOR
-                Debug.Log($"Successfully save to <color=#00AAFF>{path}</color>");
-#endif
+                DebugEditor.Log($"Successfully save to <color=#00AAFF>{path}</color>");
             }
 
             catch (System.Exception exce)
             {
-#if UNITY_EDITOR
-                Debug.LogError($"Failed to save file to {path} \n {exce}");
-#endif
+                DebugEditor.LogError($"Failed to save file to {path} \n {exce}");
             }
         }
 
@@ -37,16 +34,12 @@ namespace FishTools
             {
                 var json = File.ReadAllText(path);
                 var data = JsonUtility.FromJson<T>(json);
-#if UNITY_EDITOR
-                Debug.Log($"Successfully load from <color=#00AAFF>{path}</color>");
-#endif
+                DebugEditor.Log($"Successfully load from <color=#00AAFF>{path}</color>");
                 return data;
             }
             catch (System.Exception exce)
             {
-#if UNITY_EDITOR
-                Debug.LogError($"Failed to load from {path} \n {exce}");
-#endif
+                DebugEditor.LogError($"Failed to load from {path} \n {exce}");
                 return default(T);//返回默认值,用于泛型方法的返回
             }
         }
@@ -60,9 +53,7 @@ namespace FishTools
             }
             catch (System.Exception exce)
             {
-#if UNITY_EDITOR
-                Debug.LogError($"Failed to delete file from  {path} \n {exce}");
-#endif
+                DebugEditor.LogError($"Failed to delete file from  {path} \n {exce}");
             }
         }
     }

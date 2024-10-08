@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using FishTools;
+using FishToolsEditor;
 
 
 /// <summary>
@@ -56,9 +57,7 @@ namespace InputTool
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.Log($"{name}配置已经存在");
-#endif
+                DebugEditor.Log($"{name}配置已经存在");
                 return false;
             }
         }
@@ -74,9 +73,7 @@ namespace InputTool
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.Log($"{name}配置不存在");
-#endif
+                DebugEditor.Log($"{name}配置不存在");
                 return false;
             }
         }
@@ -90,9 +87,7 @@ namespace InputTool
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.Log($"{mappername}配置不存在");
-#endif
+                DebugEditor.Log($"{mappername}配置不存在");
                 return null;
             }
         }
@@ -106,9 +101,7 @@ namespace InputTool
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.Log($"{mappername}配置不存在");
-#endif
+                DebugEditor.Log($"{mappername}配置不存在");
             }
         }
 
@@ -117,9 +110,7 @@ namespace InputTool
         {
             mapperDic.Clear();
             mapperList.Clear();
-#if UNITY_EDITOR
-            Debug.Log("清空所有配置");
-#endif
+            DebugEditor.Log("清空所有配置");
         }
         #endregion
     }
