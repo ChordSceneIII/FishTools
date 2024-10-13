@@ -107,9 +107,7 @@ namespace FishTools
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.LogError("Key already exists in the dictionary.");
-#endif
+                DebugEditor.LogError("Key already exists in the dictionary.");
             }
         }
 

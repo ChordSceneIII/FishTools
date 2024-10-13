@@ -4,6 +4,7 @@ using FishToolsEditor;
 
 /// <summary>
 /// 物品拖拽堆叠的控制逻辑 : 在这里可以修改控制堆叠逻辑
+/// 目前只有简单的交换功能，堆叠和鼠标左右键单独分离等功能需要的时候可以再写
 /// </summary>
 
 namespace EasyUI
@@ -13,8 +14,8 @@ namespace EasyUI
     {
         [ReadOnly] public Transform originalParent;
         [ReadOnly] public Vector2 oringalpos;
-        [ReadOnly] public InventoryControl belongToInventory;//隶属背包
-        [ReadOnly] public InventoryControl cureentPointInventory;//当前指向背包
+        [ReadOnly] public InventoryControl selfBag;//隶属背包
+        [ReadOnly] public InventoryControl curBag;//当前指向背包
 
         private void Awake()
         {
@@ -22,12 +23,12 @@ namespace EasyUI
         }
         private void Start()
         {
-            belongToInventory = GetComponentInParent<InventoryControl>();
+            selfBag = GetComponentInParent<InventoryControl>();
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (belongToInventory.lockDragItem == false)
+            if (selfBag.canDragItem == true)
             {
 
                 originalParent = this.transform.parent.transform;
@@ -41,7 +42,7 @@ namespace EasyUI
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (belongToInventory.lockDragItem == false)
+            if (selfBag.canDragItem == true)
             {
                 transform.position = eventData.position;
             }
@@ -49,23 +50,23 @@ namespace EasyUI
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (belongToInventory.lockDragItem == false)
+            if (selfBag.canDragItem == true)
             {
                 GameObject target = eventData.pointerCurrentRaycast.gameObject;
                 bool canDrag = true;
 
                 if (target != null)
                 {
-                    cureentPointInventory = target.GetComponentInParent<InventoryControl>();
+                    curBag = target.GetComponentInParent<InventoryControl>();
 
                     //如果移动的背包不同
-                    if (cureentPointInventory != null && belongToInventory != cureentPointInventory)
+                    if (curBag != null && selfBag != curBag)
                     {
-                        canDrag = cureentPointInventory.isLocked == false && belongToInventory.isLocked == false;
+                        canDrag = curBag.IsFriend(selfBag) || selfBag.IsFriend(curBag);
                     }
 
                     //如果在同一个背包内移动
-                    if (cureentPointInventory == belongToInventory)
+                    if (curBag == selfBag)
                     {
                         canDrag = true;
                     }
@@ -80,14 +81,6 @@ namespace EasyUI
                 // 交换物体
                 if (target != null && canDrag && target.name == "item")
                 {
-                    // var targetInfo = target.GetComponent<IDataToView>();
-                    // var thisInfo = GetComponent<IDataToView>();
-
-                    // if (targetInfo.ITypeValue == thisInfo.ITypeValue)
-                    // {
-                    //     //假如类型相同且相加不大于最大上限即可叠加
-                    // }
-
                     this.transform.SetParent(target.transform.parent.transform, false);
                     this.transform.position = target.transform.position;
 

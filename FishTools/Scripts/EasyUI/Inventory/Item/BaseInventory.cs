@@ -13,23 +13,33 @@ namespace EasyUI
 {
     public abstract class BaseInventory<DATA, TYPE> : MonoBehaviour where DATA : BaseItemDATA<TYPE> where TYPE : Enum
     {
-        public List<DATA> itemdatas;//临时数据(传递中介)
-        public DictionarySerializable<string, GameObject> SlotDic = new DictionarySerializable<string, GameObject>();
+        public List<DATA> itemdatas = new List<DATA>();//临时数据(传递中介)
+        public DictionarySerializable<string, GameObject> slotDic = new DictionarySerializable<string, GameObject>();
+
+        protected virtual void OnEnable()
+        {
+            UpdateSlots();
+            UpdateItems();
+        }
 
         //更新格子
         public void UpdateSlots()
         {
-            SlotDic.Clear();
-            foreach (Transform child in transform)
+            slotDic.Clear();
+
+            Transform[] childs = GetComponentsInChildren<Transform>();
+            foreach (Transform child in childs)
             {
                 GameObject slot = child.gameObject;
-
-                if (SlotDic.ContainsKey(slot.name))
+                if (child.name.Contains("slot"))
                 {
-                    DebugEditor.LogWarning("格子名称有重复");
+                    if (slotDic.ContainsKey(slot.name))
+                    {
+                        DebugEditor.LogWarning("格子名称有重复");
+                        continue;
+                    }
+                    slotDic[slot.name] = slot;
                 }
-
-                SlotDic[slot.name] = slot;
             }
         }
 
@@ -37,25 +47,22 @@ namespace EasyUI
         public void UpdateItems()
         {
             itemdatas.Clear();
-            foreach (Transform child in transform)
-            {
-                var item = child.GetComponentInChildren<BaseItem<DATA, TYPE>>();
 
-                if (item != null)
-                {
-                    item.data.slotName = child.name;
-                    itemdatas.Add(item.data);
-                }
+            BaseItem<DATA, TYPE>[] items = GetComponentsInChildren<BaseItem<DATA, TYPE>>();
+            foreach (var item in items)
+            {
+                item.data.slotName = item.transform.parent.name;
+                itemdatas.Add(item.data);
             }
-            DebugEditor.Log("更新成功");
+            DebugEditor.Log("物品临时数据更新成功");
         }
+
 
         //寻找空格子
         public GameObject FindEmptySlot()
         {
-            foreach (Transform child in transform)
+            foreach (var slot in slotDic.Values)
             {
-                var slot = child.gameObject;
                 //检查格子是否为空
                 if (slot.GetComponentInChildren<BaseItem<DATA, TYPE>>() == null)
                 {
@@ -65,19 +72,23 @@ namespace EasyUI
             return null;
         }
         //寻找有某种物体的格子（限第一个找到的）
-        public (GameObject, BaseItem<DATA, TYPE>) FindUsedSlot(Enum type)
+        public (GameObject, T) FindUsedSlot<T>(Enum type) where T : BaseItem<DATA, TYPE>
         {
-            foreach (Transform child in transform)
+            foreach (var slot in slotDic.Values)
             {
-                var slot = child.gameObject;
-                var item = slot.GetComponentInChildren<BaseItem<DATA, TYPE>>();
+                var item = slot.GetComponentInChildren<T>();
+
+                if (item == null)
+                {
+                    continue;
+                }
                 //TYPE泛型比较
                 if (item.data.Type.value.Equals(type))
                 {
                     return (slot, item);
                 }
             }
-            return (null, null);
+            return (null, default);
         }
 
         //物体的添加和移除方法自定，因为不同物品的添加和移除逻辑不同
@@ -87,15 +98,15 @@ namespace EasyUI
         //加载数据并实例化
         public void LoadALLDatas(List<DATA> itemdatas)
         {
-            ClearItemAndData();
             UpdateSlots();
+            ClearInventory();
 
             //实例化
             foreach (var itemdata in itemdatas)
             {
                 //找到对应的格子
-                SlotDic.TryGetValue(itemdata.slotName, out var slot);
-                GameObject item = GameObject.Instantiate(itemdata.Type.GetObj(), slot.transform);
+                slotDic.TryGetValue(itemdata.slotName, out var slot);
+                GameObject item = GameObject.Instantiate(itemdata.Type.GetPrefab(), slot.transform);
                 item.GetComponent<BaseItem<DATA, TYPE>>().data = itemdata;
             }
         }
@@ -108,14 +119,15 @@ namespace EasyUI
         }
 
         //清除所有实例以及缓存数据
-        public void ClearItemAndData()
+        public void ClearInventory()
         {
             itemdatas.Clear();
-            foreach (Transform slot in transform)
+
+            foreach (var slot in slotDic.Values)
             {
-                foreach (Transform item in slot)
+                foreach (Transform child in slot.transform)
                 {
-                    GameObject.Destroy(item?.gameObject);
+                    Destroy(child.gameObject);
                 }
             }
         }

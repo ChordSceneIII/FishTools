@@ -18,7 +18,7 @@ namespace EasyUI
         {
             get
             {
-                if (_uiRoot == null)
+                if (_uiRoot == null || !_uiRoot.gameObject.activeInHierarchy)
                 {
                     //设置ui根节点
                     _uiRoot = GameObject.Find("Canvas").transform;
@@ -50,19 +50,6 @@ namespace EasyUI
             {
                 panelPool.Remove(key);
             }
-        }
-
-        //注册现有（场景内的）Panel
-        public int RegisterPanel(BasePanel panel)
-        {
-            if (panel != null)
-            {
-                var refID = panel.GetInstanceID();
-                panelPool.Add(refID, panel);
-                return refID;
-            }
-            else
-                return default;
         }
 
         public bool isRegistered(int refID)

@@ -3,7 +3,7 @@
 /// </summary>
 namespace FishTools
 {
-    public class BaseManager<T> where T : new()
+    public abstract class BaseManager<T> where T : new()
     {
         private static T instance;
         private static readonly object locker = new object();

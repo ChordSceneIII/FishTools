@@ -39,6 +39,10 @@ namespace FishTools
         public static T FindByID(string id)
         {
             allMonoObjects.TryGetValue(id, out var obj);
+            if (obj == null)
+            {
+                DebugEditor.LogWarning($"未找到{id}");
+            }
             return obj;
         }
 

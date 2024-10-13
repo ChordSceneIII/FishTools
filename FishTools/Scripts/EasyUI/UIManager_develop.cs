@@ -43,7 +43,7 @@ namespace EasyUI
             LoadPath<DefaultPanel>();
         }
         //加载资源路径
-        void LoadPath<T>() where T : BasePanel
+        internal static void LoadPath<T>() where T : BasePanel
         {
             var datas = Resources.LoadAll<BasePanelData<T>>("");
             foreach (var data in datas)

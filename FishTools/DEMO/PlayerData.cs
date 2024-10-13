@@ -5,7 +5,7 @@ namespace FishTools
 {
 
     [Serializable]
-    public class PlayerData : BaseData
+    public class PlayerData : ISave
     {
         [Tooltip("当前生命")]
         [SerializeField]

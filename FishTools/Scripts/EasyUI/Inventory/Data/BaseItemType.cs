@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EasyUI;
+using FishToolsEditor;
 using UnityEngine;
 
 namespace EasyUI
@@ -8,14 +9,18 @@ namespace EasyUI
     public abstract class BaseItemType<T> where T : Enum
     {
         public T value;
-        public abstract GameObject GetObj();
-        protected virtual GameObject GetObjDefault(Dictionary<T, GameObject> dic)
+        public abstract GameObject GetPrefab();
+        protected virtual GameObject GetPrefabDefault(Dictionary<T, GameObject> dic)
         {
-            if (dic.TryGetValue(value, out var obj))
+            dic.TryGetValue(value, out var obj);
+
+            if (obj == null)
             {
-                return obj;
+                DebugEditor.LogWarning("未找到类型对应的Item实例,请检查Type路径是否正确");
             }
-            return null;
+
+            return obj;
+
         }
     }
 }

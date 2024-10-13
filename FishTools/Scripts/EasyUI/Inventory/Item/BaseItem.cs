@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EasyUI
 {
-    public abstract class BaseItem<DATA, TYPE> : MonoBehaviour, IDataToView where DATA : BaseItemDATA<TYPE> where TYPE : Enum
+    public abstract class BaseItem<DATA, TYPE> : MonoBehaviour, IInfoToView where DATA : BaseItemDATA<TYPE> where TYPE : Enum
     {
         [Label("堆叠上限")] public int maxCount = 1;//最大数量。如果为1就是默认不叠加
         public DATA data;
