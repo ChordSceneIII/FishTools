@@ -6,7 +6,7 @@ using UnityEngine.Events;
 /// KeyMapper基类
 /// </summary>
 
-namespace InputTool
+namespace FishTools.InputTool
 {
     public abstract class KeyMapper : IDisposable
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
-using ActionSystem;
+using FishTools.ActionSystem;
 
-namespace FishTools
+namespace FishToolsDEMO
 {
 
     [CreateAssetMenu(fileName = "AttackCommand", menuName = "ActionSystem/Command/AttackCommand")]

@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
-using FishTools;
-using FishToolsEditor;
-
 
 /// <summary>
 /// 基于旧InputManager封装的Input工具
@@ -12,7 +7,7 @@ using FishToolsEditor;
 /// 输入检测默认就是在Update中，没什么好说的，Fixed处理物理操作请另外做
 /// </summary>
 
-namespace InputTool
+namespace FishTools.InputTool
 {
     public partial class InputManager : BaseSingletonMono<InputManager>
     {
@@ -57,7 +52,7 @@ namespace InputTool
             }
             else
             {
-                DebugEditor.Log($"{name}配置已经存在");
+                DebugF.Log($"{name}配置已经存在");
                 return false;
             }
         }
@@ -73,7 +68,7 @@ namespace InputTool
             }
             else
             {
-                DebugEditor.Log($"{name}配置不存在");
+                DebugF.Log($"{name}配置不存在");
                 return false;
             }
         }
@@ -87,7 +82,7 @@ namespace InputTool
             }
             else
             {
-                DebugEditor.Log($"{mappername}配置不存在");
+                DebugF.Log($"{mappername}配置不存在");
                 return null;
             }
         }
@@ -101,7 +96,7 @@ namespace InputTool
             }
             else
             {
-                DebugEditor.Log($"{mappername}配置不存在");
+                DebugF.Log($"{mappername}配置不存在");
             }
         }
 
@@ -110,7 +105,7 @@ namespace InputTool
         {
             mapperDic.Clear();
             mapperList.Clear();
-            DebugEditor.Log("清空所有配置");
+            DebugF.Log("清空所有配置");
         }
         #endregion
     }

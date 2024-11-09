@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FishToolsEditor;
 using UnityEngine;
 
 /// <summary>
@@ -15,7 +14,6 @@ namespace FishTools
     [Serializable]
     public struct SerializePair<Tkey, Tvalue>
     {
-
         public Tkey key;
         public Tvalue value;
 
@@ -51,7 +49,7 @@ namespace FishTools
                 if (!keySet.Add(pair.key))
                 {
                     // 发现重复的键，提示用户
-                    DebugEditor.LogError($"key重复{pair.key}");
+                    DebugF.LogError($"key重复{pair.key}");
                     hasDuplicates = true;
                 }
             }
@@ -67,7 +65,7 @@ namespace FishTools
             }
             else
             {
-                DebugEditor.LogError("无法同步到实际字典，序列化列表中中存在重复的键");
+                DebugF.LogError("无法同步到实际字典，序列化列表中中存在重复的键");
             }
         }
 
@@ -96,7 +94,7 @@ namespace FishTools
             }
         }
 
-        // 修改增删改查操作，更新 _isDirty 标志
+        // 增加
         public void Add(Tkey key, TValue value)
         {
             if (!_dict.ContainsKey(key))
@@ -107,10 +105,11 @@ namespace FishTools
             }
             else
             {
-                DebugEditor.LogError("Key already exists in the dictionary.");
+                DebugF.LogError("Key已经存在Dicitonary中");
             }
         }
 
+        // 移除
         public bool Remove(Tkey key)
         {
             if (_dict.Remove(key))
@@ -122,12 +121,73 @@ namespace FishTools
             return false;
         }
 
+        // 插入
+        public void InsertAt(int index, Tkey key, TValue value)
+        {
+            if (_dict.ContainsKey(key))
+            {
+                DebugF.LogError("Key已经存在Dicitonary中,无法插入。");
+                return; // 如果键已存在，则不插入
+            }
+
+            // 确保索引在有效范围内
+            if (index < 0 || index > _pairs.Count)
+            {
+                DebugF.LogError("插入位置超出范围。");
+                return; // 索引超出范围
+            }
+
+            // 插入到 _pairs 列表
+            _pairs.Insert(index, new SerializePair<Tkey, TValue>(key, value));
+
+            // 更新字典
+            _dict[key] = value; // 添加到字典
+
+            _isDirty = true; // 标记字典已更改
+        }
+
+        //修改Key值
+        public bool UpdateKey(Tkey oldKey, Tkey newKey)
+        {
+            if (_dict.TryGetValue(oldKey, out TValue value))
+            {
+                // 检查新键是否已存在
+                if (_dict.ContainsKey(newKey))
+                {
+                    DebugF.LogError($"新键 {newKey} 已存在，无法修改。");
+                    return false; // 新键已存在，无法更新
+                }
+
+                // 移除旧的键值对
+                _dict.Remove(oldKey);
+
+                // 更新 _pairs 中的键
+                for (int i = 0; i < _pairs.Count; i++)
+                {
+                    if (EqualityComparer<Tkey>.Default.Equals(_pairs[i].key, oldKey))
+                    {
+                        // 更新键
+                        _pairs[i] = new SerializePair<Tkey, TValue>(newKey, value);
+                        break;
+                    }
+                }
+                // 添加新的键值对
+                _dict.Add(newKey, value);
+                _isDirty = true;  // 标记字典已更改
+                return true;
+            }
+
+            // 返回 false 表示旧键不存在
+            return false;
+        }
+
         public void Clear()
         {
             _dict.Clear();
             _pairs.Clear(); // 同时清空序列化字典
         }
 
+        //键 索引器
         public TValue this[Tkey key]
         {
             get => _dict[key];
@@ -143,6 +203,32 @@ namespace FishTools
                 {
                     Add(key, value);
                 }
+            }
+        }
+
+
+        //列表 索引器
+        public TValue this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= _pairs.Count)
+                {
+                    throw new IndexOutOfRangeException("索引超出范围。");
+                }
+                return _pairs[index].value;
+            }
+            set
+            {
+                if (index < 0 || index >= _pairs.Count)
+                {
+                    throw new IndexOutOfRangeException("索引超出范围。");
+                }
+
+                var key = _pairs[index].key;
+                _dict[key] = value; // 更新字典中的值
+                _pairs[index] = new SerializePair<Tkey, TValue>(key, value); // 更新序列化列表中的值
+                _isDirty = true; // 标记字典已更改
             }
         }
 
@@ -167,6 +253,11 @@ namespace FishTools
 
         public bool ContainsKey(Tkey key) => _dict.ContainsKey(key);
 
+        // 这里实现 GetEnumerator 方法
+        public IEnumerator<KeyValuePair<Tkey, TValue>> GetEnumerator()
+        {
+            return _dict.GetEnumerator();
+        }
 
         // 获取字典的 Keys
         public Dictionary<Tkey, TValue>.KeyCollection Keys => _dict.Keys;
@@ -174,6 +265,7 @@ namespace FishTools
         // 获取字典的 Values
         public Dictionary<Tkey, TValue>.ValueCollection Values => _dict.Values;
 
+        public int Count => _pairs.Count;
 
         // [静态方法] 从 Dictionary 转换到 DictionarySerializable
         public static DictionarySerializable<Tkey, TValue> ToSerializable(Dictionary<Tkey, TValue> dict)
@@ -187,5 +279,6 @@ namespace FishTools
 
             return serializableDict;
         }
+
     }
 }

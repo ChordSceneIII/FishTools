@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace InputTool
+namespace FishTools.InputTool
 {
     public partial class InputManager
     {

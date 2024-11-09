@@ -1,14 +1,11 @@
 using UnityEngine;
-using TimerTool;
-using UnityEngine.Events;
-using System;
-using UnityEditor;
+using FishTools.TimeTool;
 
 /// <summary>
 /// 在这里拓展映射KeyMapper类型
 /// </summary>
 
-namespace InputTool
+namespace FishTools.InputTool
 {
     public class ComplexKey : KeyMapper
     {

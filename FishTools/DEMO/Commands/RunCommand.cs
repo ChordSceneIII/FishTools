@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
-using ActionSystem;
+using FishTools.ActionSystem;
 
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     [CreateAssetMenu(fileName = "RunCommand", menuName = "ActionSystem/Command/Runcommand")]
     public class RunCommand : BaseCommand

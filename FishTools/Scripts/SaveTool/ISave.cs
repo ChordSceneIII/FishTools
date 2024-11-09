@@ -2,7 +2,7 @@
 /// 数据文件的基类
 /// </summary>
 
-namespace FishTools
+namespace FishTools.SaveTool
 {
     public interface ISave
     {

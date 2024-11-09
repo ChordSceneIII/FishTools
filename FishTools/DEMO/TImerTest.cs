@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TimerTool;
+using FishTools.TimeTool;
 using System;
 
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     public class TImerTest : MonoBehaviour
     {

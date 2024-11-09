@@ -1,59 +1,104 @@
 using System.Collections.Generic;
 using System.Linq;
-using FishToolsEditor;
 using UnityEngine;
 /// <summary>
-/// 快速标签，Unity FindObjectwithTag的上位替代 (但是只支持运行环境不支持编辑器环境的使用)
-/// 与Tag不同，该方法的Tag是唯一的，每个实例只能有唯一的Tag，利用率Dic的key不重复的特性
-/// 而且可以自主在生命周期中声明注册和注销时机
-/// 具有唯一性，快速性，和灵活性
+/// FastTag 用于在 Unity 中快速查找和管理 MonoBehaviour 实例的工具。
+/// 使用需要实现 IFastTag 接口并声明 FID，即可自动将对象注册到全局字典。支持通过 FID 查找、自动注册、动态缓存，无需手动管理。
 /// </summary>
 
 namespace FishTools
 {
-    public static class FastTag<T> where T : MonoBehaviour, IFastTag
+    public interface IFastTag<T> where T : MonoBehaviour, IFastTag<T>
     {
-        //这个字典并非全局唯一，而是全类型T唯一
-        private static Dictionary<string, T> allMonoObjects = new Dictionary<string, T>();
-
-        public static void Register(T obj)
+        string FID { get; }
+        void Register()
         {
-            if (!allMonoObjects.ContainsKey(obj.FID))
-            {
-                allMonoObjects[obj.FID] = obj;
-            }
-            else
-            {
-                DebugEditor.LogWarning($"Object with ID {obj.FID} is already registered.");
-            }
+            FastTag<T>.Register(this as T);
         }
+    }
 
-        public static void UnRegister(T obj)
+    public static class FastTag<T> where T : MonoBehaviour, IFastTag<T>
+    {
+        private static Dictionary<string, T> scripts = new Dictionary<string, T>();
+
+        public static void Register(T mono)
         {
-            if (allMonoObjects.ContainsKey(obj.FID))
+            //维护scripts表，移除空值元素
+            scripts.TryGetValue(mono.FID, out var m_obj);
+            if (m_obj == null && scripts.ContainsKey(mono.FID))
             {
-                allMonoObjects.Remove(obj.FID);
+                scripts.Remove(mono.FID);
+            }
+
+            if (!scripts.ContainsKey(mono.FID))
+            {
+                scripts[mono.FID] = mono;
             }
         }
 
         public static T FindByID(string id)
         {
-            allMonoObjects.TryGetValue(id, out var obj);
-            if (obj == null)
+            if (TryGetTag(id, out var mono))
             {
-                DebugEditor.LogWarning($"未找到{id}");
+                Debug.Log($"找到{mono}");
+                return mono;
             }
-            return obj;
+            else
+            {
+                Debug.LogError("找不到ID为" + id + "的脚本");
+                return null;
+            }
+
+        }
+
+        public static bool ContainsID(string id)
+        {
+            return TryGetTag(id, out var mono);
         }
 
         public static T[] FindALL()
         {
-            return allMonoObjects.Values.ToArray();
+            var cur_scripts = GameObject.FindObjectsOfType<T>();
+            foreach (var cur_script in cur_scripts)
+            {
+                cur_script.Register();
+            }
+            return scripts.Values.ToArray();
         }
 
-        public static IReadOnlyDictionary<string, T> GetAllFastTagObjects()
+        public static bool TryGetTag(string id, out T mono)
         {
-            return allMonoObjects;
+            scripts.TryGetValue(id, out var m_obj);
+
+            if (m_obj == null)
+            {
+                //直接在场景中寻找
+                var cur_scripts = GameObject.FindObjectsOfType<T>(true);
+                foreach (var cur_script in cur_scripts)
+                {
+                    if (cur_script.FID == id)
+                    {
+                        cur_script.Register();
+                        mono = cur_script;
+                        return true;
+                    }
+                }
+            }
+
+            mono = m_obj;
+
+
+            if (mono != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
+
     }
+
 }

@@ -1,65 +1,53 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using FishTools;
-using FishToolsEditor;
 
 /// <summary>
 /// 动态UI管理器
 /// </summary>
 
-namespace EasyUI
+namespace FishTools.EasyUI
 {
     public class UIManager_develop : BaseSingletonMono<UIManager_develop>
     {
         //资源路径
         internal Dictionary<string, string> pathDict = new Dictionary<string, string>();
 
-        //预制件内存
+        //预制件缓存
         internal Dictionary<string, GameObject> prefabDict = new Dictionary<string, GameObject>();
 
         //已打开界面缓存引用
         internal Dictionary<string, BasePanel> panelDict = new Dictionary<string, BasePanel>();
 
-        //根节点定义 用于定位UI预制体的父对象位置
-        private Transform _uiRoot;
-        public Transform UIRoot
-        {
-            get
-            {
-                if (_uiRoot == null)
-                {
-                    //设置ui根节点
-                    _uiRoot = GameObject.Find("Canvas").transform;
-                }
-                return _uiRoot;
-            }
-        }
-
         protected override void Awake()
         {
             base.Awake();
             DontDestroyOnLoad(this.gameObject);
-            LoadPath<FollowPanel>();
-            LoadPath<DefaultPanel>();
+
+            LoadPath();
         }
         //加载资源路径
-        internal static void LoadPath<T>() where T : BasePanel
+        internal static void LoadPath()
         {
-            var datas = Resources.LoadAll<BasePanelData<T>>("");
+            var script_objs = Resources.LoadAll<ScriptableObject>("");
+
+            var datas = script_objs.OfType<IBasePanelData>().ToList();
+
             foreach (var data in datas)
             {
                 data?.AddToPathDict();
             }
         }
 
-        //获取预制件存到内存中
-        public GameObject TryGetPrefab(string name)
+        //获取预制件并加入到预制件缓存中
+        public bool TryGetPrefab(string name, out GameObject prefab)
         {
+            prefab = null;
             //检查路径缓存
             if (!pathDict.TryGetValue(name, out var path))
             {
-                DebugEditor.LogError("界面名称错误，或未配置路径:" + name);
-                return null;
+                DebugF.LogError("界面名称错误，或未配置路径:" + name);
+                return false;
             }
 
             //加载资源到内存中
@@ -74,56 +62,112 @@ namespace EasyUI
 
                     if (panelPrefab == null)
                     {
-                        DebugEditor.LogError("无法加载预制件,请检查路径是否正确:" + path);
-                        return null;
+                        DebugF.LogError("无法加载预制件,请检查路径是否正确:" + path);
+                        return false;
                     }
 
-                    //加入到缓存路径，表示已经加载到内存的预制件
+                    //把预制件添加到缓存中，方便下一次调用不需要重复使用Resources.Load 读盘
                     prefabDict.Add(name, panelPrefab);
                 }
                 catch (System.Exception ex)
                 {
-                    DebugEditor.LogError("加载预制件失败: " + path + "\n" + ex.Message);
-                    return null;
+                    DebugF.LogError("加载预制件失败: " + path + "\n" + ex.Message);
+                    return false;
                 }
             }
 
-            return panelPrefab;
+            prefab = panelPrefab;
+            return prefab != null;
+        }
+
+        //获取已经存在的面板
+        public BasePanel GetExistPanel(string name)
+        {
+            panelDict.TryGetValue(name, out var panel);
+            return panel;
         }
 
         //打开界面
         public BasePanel OpenPanel(string name)
         {
-            //检查已打开页面缓存
+            //如果存在面板则返回panel，否则创建新的panel
+            if (panelDict.TryGetValue(name, out var panel)) { }
+            else { panel = GetNewPanel(name); }
+
+
+            panel.gameObject.SetActive(true);
+
+            return panel;
+
+        }
+
+        //关闭界面
+        public BasePanel ClosePanel(string name)
+        {
+            if (panelDict.TryGetValue(name, out var panel)) { }
+            else { panel = GetNewPanel(name); }
+
+
+            panel.gameObject.SetActive(false);
+            return panel;
+        }
+
+        //面板开关，打开关闭
+        public BasePanel RepeatPanel(string name)
+        {
+            if (panelDict.TryGetValue(name, out var panel)) { }
+            else { panel = GetNewPanel(name); }
+
+            panel.gameObject.SetActive(!panel.gameObject.activeSelf);
+            return panel;
+        }
+
+        //面板开关，移除和生成
+        public BasePanel RepeatNewPanel(string name)
+        {
+            //如果界面显示了
             if (panelDict.TryGetValue(name, out var panel))
             {
-                DebugEditor.LogWarning("界面已打开:" + name);
-                //返回该界面
-                return panel;
+                DestroyPanel(name);
+            }
+            else
+            {
+                panel = GetNewPanel(name);
             }
 
-            //读取预制件内存
-            var panelPrefab = TryGetPrefab(name);
+            return panel;
+        }
 
-            //从内存中加载界面
-            if (panelPrefab != null)
+        //生成面板并加入到缓存
+        public BasePanel GetNewPanel(string name, bool isActive = true)
+        {
+            if (panelDict.ContainsKey(name))
             {
-                GameObject panelObject = GameObject.Instantiate(panelPrefab, UIRoot, false);
+                DebugF.LogError("面板已经存在:" + name);
+                return null;
+            }
 
-                panel = panelObject.GetComponent<BasePanel>();
+            if (TryGetPrefab(name, out var panelPrefab))
+            {
+
+                GameObject panelObject = GameObject.Instantiate(panelPrefab, panelPrefab.GetComponent<BasePanel>().UIRoot, false);
+
+                var panel = panelObject?.GetComponent<BasePanel>();
+
+
                 if (panel == null)
                 {
-                    DebugEditor.LogError("预制件上没有找到 BasePanel 组件:" + name);
+                    DebugF.LogError($"预制件上没有找到 {panel} 组件:" + panelObject.name);
                     Destroy(panelObject);
                     return null;
                 }
 
+
                 //加入到缓存路径，表示已经显示的界面
                 panelDict.Add(name, panel);
+                panelObject.SetActive(isActive);
 
-                DebugEditor.Log(panel.GetInstanceID());
-                DebugEditor.Log(panel.gameObject.GetInstanceID());
-
+                DebugF.Log($"从预制体中加载了一个面板{panelObject}");
                 return panel;
             }
             else
@@ -132,55 +176,20 @@ namespace EasyUI
             }
         }
 
-        //关闭界面
-        public bool ClosePanel(string name)
+        //移除面板并移除缓存
+        public bool DestroyPanel(string name)
         {
             // 检查是否打开并获取面板
             if (panelDict.TryGetValue(name, out var panel))
             {
-                // 移除缓存，表示界面未打开
+                // 移除面板，表示面板不存在
                 panelDict.Remove(name);
                 // 关闭界面
-                panel.Close();
+                panel.gameObject.SetActive(false);
+                Destroy(panel.gameObject);
                 return true;
             }
-
-            //界面未打开,警告
-            DebugEditor.LogWarning("界面未打开:" + name);
             return false;
-        }
-
-        //如果关闭则打开，如果打开则关闭
-        public BasePanel RepatPanel(string name)
-        {
-            //如果界面已打开
-            if (panelDict.TryGetValue(name, out var panel))
-            {
-                // 移除缓存，表示界面未打开
-                panelDict.Remove(name);
-                // 关闭界面
-                panel.Close();
-                return null;
-            }
-            //如果界面未打开, 则打开新界面
-            return OpenPanel(name);
-        }
-
-        //重新打开一个新的UI界面(加载预制体初始的设置)
-        public BasePanel OpenNewPanel(string name)
-        {
-            //如果界面已打开
-            if (panelDict.TryGetValue(name, out var panel))
-            {
-                // 移除缓存，表示界面未打开
-                panelDict.Remove(name);
-                // 关闭界面
-                panel.Close();
-                //重新打开新界面
-                return OpenPanel(name);
-            }
-            //如果界面未打开, 则打开新界面
-            return OpenPanel(name);
         }
 
     }

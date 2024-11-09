@@ -1,12 +1,9 @@
 using UnityEngine;
-using FishTools;
 /// <summary>
-/// 定制化鼠标场景交互器
-///
-/// 带一个静态方法获取Ray指向的物体(射线检测参数需要使用配置文件ScenUIConfig配置)
+/// 游戏场景对象交互，不依赖于Canvas的UI系统
 /// </summary>
 
-namespace SceneUITool
+namespace FishTools.SceneUI
 {
     public class SceneUIManager : BaseSingletonMono<SceneUIManager>
     {

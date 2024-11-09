@@ -1,34 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
-using FishTools;
-using FishToolsEditor;
-using Unity.VisualScripting.YamlDotNet.Core;
 using UnityEngine;
 
 /// <summary>
-/// 界面池管理，与develop不同，采用的是Setactive的方式开关界面，但是是共享一套路径资源
+/// 界面池管理，与UIManager_develop不同的是，pool是可以生成多个实例的，而develop是一个预制体对应一个实例
 /// </summary>
 
-namespace EasyUI
+namespace FishTools.EasyUI
 {
     public class UIManager_pool : BaseSingletonMono<UIManager_pool>
     {
-        private Transform _uiRoot;
-        public Transform UIRoot
-        {
-            get
-            {
-                if (_uiRoot == null || !_uiRoot.gameObject.activeInHierarchy)
-                {
-                    //设置ui根节点
-                    _uiRoot = GameObject.Find("Canvas").transform;
-                }
-                return _uiRoot;
-            }
-        }
-
         //UI池
-        internal Dictionary<int, BasePanel> panelPool = new Dictionary<int, BasePanel>();
+        [SerializeField] internal DictionarySerializable<string, BasePanel> panelPool = new DictionarySerializable<string, BasePanel>();
 
         protected override void Awake()
         {
@@ -36,9 +18,9 @@ namespace EasyUI
         }
 
         //清理无效引用
-        private void CleanUpNullReferences()
+        private void CleanNullReferences()
         {
-            var keysToRemove = new List<int>();
+            var keysToRemove = new List<string>();
             foreach (var kvp in panelPool)
             {
                 if (kvp.Value == null)
@@ -52,93 +34,112 @@ namespace EasyUI
             }
         }
 
-        public bool isRegistered(int refID)
+        public bool ContainsPanel(string panelIndex)
         {
-            return panelPool.ContainsKey(refID);
+            CleanNullReferences();
+            return panelPool.ContainsKey(panelIndex);
+        }
+        public bool TryGetPanel(string panelIndex, out BasePanel panel)
+        {
+            CleanNullReferences();
+            panelPool.TryGetValue(panelIndex, out BasePanel _panel);
+            panel = _panel;
+            return panel != null;
         }
 
         //从预制体资源生成一个新的Panel
-        public (BasePanel, int) GetNewPanel(string panelname)
+        public BasePanel GetNewPanel(string panelname, string panelIndex, bool isActive = true)
         {
             //每次注册对象池时先清理无效引用，减少GC
-            CleanUpNullReferences();
-
-            BasePanel panel = null;
-            var panelPrefab = UIManager_develop.Instance?.TryGetPrefab(panelname);
-
-            if (panelPrefab != null)
+            CleanNullReferences();
+            if (panelPool.ContainsKey(panelIndex))
             {
-                GameObject panelObject = GameObject.Instantiate(panelPrefab, UIRoot, false);
+                DebugF.LogError($"对象池中已经存在标记为 {panelIndex} 的面板");
+                return null;
+            }
 
-                panel = panelObject?.GetComponent<BasePanel>();
+            if (UIManager_develop.Instance.TryGetPrefab(panelname, out var panelPrefab))
+            {
+                GameObject panelObject = GameObject.Instantiate(panelPrefab, panelPrefab.GetComponent<BasePanel>().UIRoot, false);
+
+                var panel = panelObject?.GetComponent<BasePanel>();
+
 
                 if (panel == null)
                 {
-                    DebugEditor.LogError("预制件上没有找到 BasePanel 组件:" + name);
+                    DebugF.LogError($"预制件上没有找到 {panel} 组件:" + panelObject.name);
                     Destroy(panelObject);
-                    return default;
+                    return null;
                 }
 
-                var refID = panel.GetInstanceID();
-
                 //加入到UI池中
-                panelPool.Add(refID, panel);
+                panelPool.Add(panelIndex, panel);
 
-                DebugEditor.Log($"加载了一个新的面板{panelname},refID:{refID}");
-                return (panel, refID);
+                panelObject.SetActive(isActive);
+
+                DebugF.Log($"加载了一个新的面板{panelname},标记为:{panelIndex}");
+                return panel;
             }
             else
             {
-                return default;
+                return null;
             }
         }
 
-        public BasePanel OpenPanel(int refID)
+        public bool DestoryPanel(string panelIndex)
         {
-            if (panelPool.TryGetValue(refID, out var panel))
+            if (panelPool.TryGetValue(panelIndex, out var panel))
+            {
+                panel.gameObject.SetActive(false);
+                Destroy(panel.gameObject);
+                return true;
+            }
+            else
+            {
+                DebugF.LogWarning($"通过{panelIndex}未找到面板");
+                return false;
+            }
+
+        }
+
+        public BasePanel OpenPanel(string panelIndex)
+        {
+            if (panelPool.TryGetValue(panelIndex, out var panel))
             {
                 panel.gameObject.SetActive(true);
                 return panel;
             }
             else
             {
-                DebugEditor.LogWarning($"通过{refID}未找到面板");
+                DebugF.LogWarning($"通过{panelIndex}未找到面板");
                 return default;
             }
         }
 
-        public (BasePanel, bool) RepatPanel(int refID)
+        public BasePanel RepatPanel(string panelIndex)
         {
-            if (panelPool.TryGetValue(refID, out var panel))
+            if (panelPool.TryGetValue(panelIndex, out var panel))
             {
-                if (panel.gameObject.activeSelf == false)
-                {
-                    panel.gameObject.SetActive(true);
-                    return (panel, true);
-                }
-                else
-                {
-                    panel.gameObject.SetActive(false);
-                    return (panel, false);
-                }
+                panel.gameObject.SetActive(!panel.gameObject.activeSelf);
+                return panel;
             }
             else
             {
-                DebugEditor.LogWarning($"通过{refID}未找到面板");
+                DebugF.LogWarning($"通过{panelIndex}未找到面板");
                 return default;
             }
         }
 
-        public BasePanel ClosePanel(int refID)
+        public BasePanel ClosePanel(string panelIndex)
         {
-            if (panelPool.TryGetValue(refID, out var panel))
+            if (panelPool.TryGetValue(panelIndex, out var panel))
             {
                 panel.gameObject.SetActive(false);
                 return panel;
             }
             else
             {
-                DebugEditor.LogWarning($"通过{refID}未找到面板");
+                DebugF.LogWarning($"通过{panelIndex}未找到面板");
                 return default;
             }
         }

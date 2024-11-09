@@ -1,0 +1,19 @@
+{
+    "name": "FishTools.ScriptsEditor",
+    "rootNamespace": "FishTools.ScriptsEditor",
+    "references": [
+        "GUID:a74fd22e65835494cabb96281f0b6b90",
+        "GUID:594176ae608b2af4dadea0129522e489"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

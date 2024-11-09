@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using FishToolsEditor;
 using UnityEngine;
-
 /// <summary>
 /// 动作管理器
 /// 需要使用ActionManager的ScriptableObject实例注册BaseCommand实例
@@ -12,7 +10,7 @@ using UnityEngine;
 ///
 /// </summary>
 
-namespace ActionSystem
+namespace FishTools.ActionSystem
 {
     //动作处理器(单线程),权重处理器
     [CreateAssetMenu(fileName = "actionmanager", menuName = "ActionSystem/Manager", order = 0)]
@@ -61,7 +59,7 @@ namespace ActionSystem
             }
             else
             {
-                DebugEditor.LogWarning($"{this}: {command} is not found!");
+                DebugF.LogWarning($"{this}: {command} is not found!");
             }
         }
 
@@ -80,13 +78,13 @@ namespace ActionSystem
                     return cmd as T;
                 else
                 {
-                    DebugEditor.LogWarning($"{this}: {command} is not {typeof(T)}!");
+                    DebugF.LogWarning($"{this}: {command} is not {typeof(T)}!");
                     return null;
                 }
             }
             else
             {
-                DebugEditor.LogWarning($"{this}: {command} is not found!");
+                DebugF.LogWarning($"{this}: {command} is not found!");
                 return null;
             }
         }

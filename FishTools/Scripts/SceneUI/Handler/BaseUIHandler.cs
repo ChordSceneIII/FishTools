@@ -1,10 +1,12 @@
-using SceneUITool;
 using UnityEngine;
 
-public abstract class BaseUIHandler : MonoBehaviour
+namespace FishTools.SceneUI
 {
-    protected virtual void Awake()
+    public abstract class BaseUIHandler : MonoBehaviour
     {
-        SceneUIManager.Instance.Initializer("SceneUIManager");
+        protected virtual void Awake()
+        {
+            SceneUIManager.Instance.Initializer("SceneUIManager");
+        }
     }
 }

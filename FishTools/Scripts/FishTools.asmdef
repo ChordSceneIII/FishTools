@@ -1,24 +1,15 @@
 {
-    "name": "FishTools",
+    "name": "FIshTools",
     "rootNamespace": "FishTools",
     "references": [
-        "GUID:594176ae608b2af4dadea0129522e489"
+        "Unity.TextMeshPro"
     ],
-    "includePlatforms": [
-        "Android",
-        "Editor",
-        "EmbeddedLinux",
-        "LinuxStandalone64",
-        "CloudRendering",
-        "WSA",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

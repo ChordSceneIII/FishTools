@@ -1,9 +1,8 @@
-using FishToolsEditor;
 using UnityEngine;
 /// <summary>
 /// 动作命令的基类，定义了基本的属性
 /// </summary>
-namespace ActionSystem
+namespace FishTools.ActionSystem
 {
     public abstract class BaseCommand : ScriptableObject
     {
@@ -42,25 +41,25 @@ namespace ActionSystem
             if (isActive)
             {
                 isExecuting = true;
-                DebugEditor.Log(GetType().Name + "执行中");
+                DebugF.Log(GetType().Name + "执行中");
                 OnExecute();
             }
             else
             {
-                DebugEditor.Log(GetType().Name + "未激活");
+                DebugF.Log(GetType().Name + "未激活");
             }
         }
         public void Exit()
         {
             if (isActive)
             {
-                DebugEditor.Log(GetType().Name + "退出");
+                DebugF.Log(GetType().Name + "退出");
                 isExecuting = false;
                 OnExit();
             }
             else
             {
-                DebugEditor.Log(GetType().Name + "未激活");
+                DebugF.Log(GetType().Name + "未激活");
             }
         }
 
@@ -68,13 +67,13 @@ namespace ActionSystem
         {
             if (isActive)
             {
-                DebugEditor.Log(GetType().Name + "被打断");
+                DebugF.Log(GetType().Name + "被打断");
                 isExecuting = false;
                 OnBreak();
             }
             else
             {
-                DebugEditor.Log(GetType().Name + "未激活");
+                DebugF.Log(GetType().Name + "未激活");
             }
         }
 

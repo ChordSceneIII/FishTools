@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using InputTool;
+using FishTools.InputTool;
+using FishTools;
 
-namespace FishTools
+namespace FishToolsDEMO
 {
 
     public class TestListener : MonoBehaviour

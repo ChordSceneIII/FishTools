@@ -3,7 +3,7 @@ using UnityEngine;
 /// 配置文件
 /// </summary>
 
-namespace SceneUITool
+namespace FishTools.SceneUI
 {
     public class SceneUIConfig : ScriptableObject
     {

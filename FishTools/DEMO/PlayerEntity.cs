@@ -1,8 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using FishTools;
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     public class PlayerEntity : BaseSingletonMono<PlayerEntity>
     {

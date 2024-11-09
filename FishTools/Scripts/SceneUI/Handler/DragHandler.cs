@@ -1,10 +1,9 @@
-using FishToolsEditor;
 using UnityEngine;
 /// <summary>
 /// 拖拽控制器，比用OnMouseDrag更灵活
 /// </summary>
 
-namespace SceneUITool
+namespace FishTools.SceneUI
 {
 
     public class DragHandler : BaseUIHandler

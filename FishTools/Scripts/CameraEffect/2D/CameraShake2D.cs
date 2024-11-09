@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace FishTools
+namespace FishTools.CameraEffect
 {
     public class CameraShake : MonoBehaviour
     {

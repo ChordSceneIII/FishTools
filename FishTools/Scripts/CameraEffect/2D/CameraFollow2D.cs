@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using FishToolsEditor;
-using TreeEditor;
 using UnityEngine;
 
-namespace FishTools
+namespace FishTools.CameraEffect
 {
     public class CameraFollow2D : MonoBehaviour
     {
@@ -19,7 +14,7 @@ namespace FishTools
         {
             if (target == null || targetCamera == null)
             {
-                DebugEditor.LogError("未设置相机或跟随目标");
+                DebugF.LogError("未设置相机或跟随目标");
                 return;
             }
 

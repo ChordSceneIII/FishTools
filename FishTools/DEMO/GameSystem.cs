@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     public class GameInitializer : MonoBehaviour
     {

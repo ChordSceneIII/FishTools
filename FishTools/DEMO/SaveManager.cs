@@ -1,15 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Codice.Client.Common;
 using UnityEngine;
+using FishTools;
+
 
 /// <summary>
 /// 存档管理中心：管理存档位置，存档数量，存档文件名
 /// 以及BaseSave派生类的引用
 /// </summary>
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     public class SaveManager : BaseSingletonMono<SaveManager>
     {

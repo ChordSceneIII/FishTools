@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.IO;
-using FishToolsEditor;
 
 /// <summary>
 /// 存档系统底层逻辑，通常需要创建一个SaveManager来管理存档的配置相关
 /// </summary>
 
-namespace FishTools
+namespace FishTools.SaveTool
 {
     public static class SaveSystem
     {
@@ -18,12 +17,12 @@ namespace FishTools
             try
             {
                 File.WriteAllText(path, json);
-                DebugEditor.Log($"Successfully save to <color=#00AAFF>{path}</color>");
+                DebugF.Log($"成功保存JSON数据: <color=#00AAFF>{path}</color>");
             }
 
             catch (System.Exception exce)
             {
-                DebugEditor.LogError($"Failed to save file to {path} \n {exce}");
+                DebugF.LogError($"保存JSON数据失败: <color=#00AAFF>{path}</color> \n {exce}");
             }
         }
 
@@ -34,12 +33,12 @@ namespace FishTools
             {
                 var json = File.ReadAllText(path);
                 var data = JsonUtility.FromJson<T>(json);
-                DebugEditor.Log($"Successfully load from <color=#00AAFF>{path}</color>");
+                DebugF.Log($"成功加载JSON数据: <color=#00AAFF>{path}</color>");
                 return data;
             }
             catch (System.Exception exce)
             {
-                DebugEditor.LogError($"Failed to load from {path} \n {exce}");
+                DebugF.LogError($"加载JSON数据失败: <color=#00AAFF>{path}</color>\n {exce}");
                 return default(T);//返回默认值,用于泛型方法的返回
             }
         }
@@ -50,10 +49,12 @@ namespace FishTools
             try
             {
                 File.Delete(path);
+                DebugF.LogError($"成功删除数据: <color=#00AAFF>{path}</color> \n");
+
             }
             catch (System.Exception exce)
             {
-                DebugEditor.LogError($"Failed to delete file from  {path} \n {exce}");
+                DebugF.LogError($"删除数据失败: <color=#00AAFF>{path}</color> \n {exce}");
             }
         }
     }

@@ -1,8 +1,9 @@
 using UnityEngine;
-using ActionSystem;
+using FishTools.ActionSystem;
 using System;
+using FishTools;
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     public class PlayerControl : BaseSingletonMono<PlayerControl>
     {

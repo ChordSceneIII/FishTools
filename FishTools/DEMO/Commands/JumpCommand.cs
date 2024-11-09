@@ -1,7 +1,7 @@
 using UnityEngine;
-using ActionSystem;
+using FishTools.ActionSystem;
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     [CreateAssetMenu(fileName = "JumpCommand", menuName = "ActionSystem/Command/JumpCommand")]
     public class JumpCommand : BaseCommand

@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
-using ActionSystem;
+using FishTools.ActionSystem;
 
 
-namespace FishTools
+namespace FishToolsDEMO
 {
     [CreateAssetMenu(fileName = "RollCommand", menuName = "ActionSystem/Command/RollCommand")]
     public class RollCommand : BaseCommand

@@ -55,5 +55,9 @@ namespace FishTools
                 Destroy(gameObject);
             }
         }
+        protected virtual void OnDestroy()
+        {
+            instance = null;
+        }
     }
 }
