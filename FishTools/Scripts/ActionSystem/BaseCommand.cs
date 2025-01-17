@@ -9,10 +9,8 @@ namespace FishTools.ActionSystem
         protected BaseCommand()
         { }
 
-        [SerializeField]
-        internal string command_name;
+        public string command_name;
 
-        [SerializeField]
         [Tooltip("是否激活")]
         private bool isActive = true;
         public bool IsActive
@@ -20,16 +18,14 @@ namespace FishTools.ActionSystem
             get => isActive;
         }
 
-        [SerializeField]
-        [Tooltip("是否正在执行")]
+        [SerializeField, Tooltip("是否正在执行")]
         private bool isExecuting = false;
         public bool IsExecuting
         {
             get => isExecuting;
         }
 
-        [SerializeField]
-        [Tooltip("优先级")]
+        [SerializeField, Tooltip("优先级")]
         private int priority = 0;
         public int Priority
         {

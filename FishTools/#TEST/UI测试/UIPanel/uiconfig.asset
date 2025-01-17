@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ff1427aaae784f41b47fc310c05f3a4, type: 3}
+  m_Name: uiconfig
+  m_EditorClassIdentifier: 
+  path:
+    _pairs:
+    - key: "\u754C\u9762"
+      value:
+        basepanel: {fileID: 174186462887858570, guid: 36501acc6219f60499fdc266cf6ad5da, type: 3}
+        rootName: Canvas
+    - key: "\u80CC\u5305"
+      value:
+        basepanel: {fileID: 6385415761024307529, guid: 1defc88d5c15b5e409fd6313b408c511, type: 3}
+        rootName: Canvas
+    - key: "\u5546\u57CE"
+      value:
+        basepanel: {fileID: 3093544559133717602, guid: 2cf9c732deb8ba94c941e5d59bd3bfb5, type: 3}
+        rootName: Canvas
+  panel_cache:
+    _pairs:
+    - key: "\u754C\u9762"
+      value: {fileID: 0}
+    - key: "\u5546\u57CE"
+      value: {fileID: 0}

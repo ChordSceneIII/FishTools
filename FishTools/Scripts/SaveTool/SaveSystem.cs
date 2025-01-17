@@ -48,9 +48,16 @@ namespace FishTools.SaveTool
         {
             try
             {
-                File.Delete(path);
-                DebugF.LogError($"成功删除数据: <color=#00AAFF>{path}</color> \n");
-
+                // 检查文件是否存在
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    DebugF.Log($"成功删除数据: <color=#00AAFF>{path}</color> \n");
+                }
+                else
+                {
+                    DebugF.LogWarning($"文件不存在，无法删除: <color=#00AAFF>{path}</color> \n");
+                }
             }
             catch (System.Exception exce)
             {

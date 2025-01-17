@@ -12,17 +12,11 @@ namespace FishTools.InputTool
     public partial class InputManager : BaseSingletonMono<InputManager>
     {
         #region MonoLife
-        protected override void Awake()
-        {
-            base.Awake();
-            DontDestroyOnLoad(this.gameObject);
-        }
-
         //静态列表，脱离Mono生命周期方便再编辑器中管理
         internal static List<KeyMapper> mapperList = new List<KeyMapper>();
 
         //字典，用于映射配置的管理
-        internal static Dictionary<string, KeyMapper> mapperDic = new Dictionary<string, KeyMapper>();
+        public static Dictionary<string, KeyMapper> mapperDic = new Dictionary<string, KeyMapper>();
 
         void Update()
         {

@@ -1,16 +1,13 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-
-namespace FishToolsEditor
+/// <summary>
+/// 文件夹图标自定义
+/// </summary>
+[InitializeOnLoad]
+internal static class FolderIconsLoad
 {
-    /// <summary>
-    /// 文件夹图标自定义
-    /// </summary>
-    [InitializeOnLoad]
-    internal static class FolderIconsLoad
-    {
-        private static readonly Dictionary<string, string> folderIconMappings = new Dictionary<string, string>
+    private static readonly Dictionary<string, string> folderIconMappings = new Dictionary<string, string>
         {
             {"Editor", "c_icon_editor.png"},
             {"Resources", "c_icon_resources.png"},
@@ -31,27 +28,27 @@ namespace FishToolsEditor
             {"Configs","c_icon_configs.png"},
         };
 
-        static FolderIconsLoad()
-        {
-            EditorApplication.projectWindowItemOnGUI += OnProjectWindowItemGUI;
-        }
+    static FolderIconsLoad()
+    {
+        EditorApplication.projectWindowItemOnGUI += OnProjectWindowItemGUI;
+    }
 
-        private static void OnProjectWindowItemGUI(string guid, Rect selectionRect)
+    private static void OnProjectWindowItemGUI(string guid, Rect selectionRect)
+    {
+        string path = AssetDatabase.GUIDToAssetPath(guid);
+        if (System.IO.Directory.Exists(path))
         {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            if (System.IO.Directory.Exists(path))
+            foreach (var entry in folderIconMappings)
             {
-                foreach (var entry in folderIconMappings)
+                if (path.EndsWith(entry.Key))
                 {
-                    if (path.EndsWith(entry.Key))
-                    {
-                        Rect rect = new Rect(selectionRect.x + selectionRect.width - 16, selectionRect.y, 16, 16);
-                        string iconPath = $"Assets/Plugins/FishTools/Editor/Icons/{entry.Value}";
-                        GUI.Label(rect, EditorGUIUtility.IconContent(iconPath));
-                        break;
-                    }
+                    Rect rect = new Rect(selectionRect.x + selectionRect.width - 16, selectionRect.y, 16, 16);
+                    string iconPath = $"Assets/Plugins/FishTools/Editor/FolderIcons/{entry.Value}";
+                    GUI.Label(rect, EditorGUIUtility.IconContent(iconPath));
+                    break;
                 }
             }
         }
     }
 }
+

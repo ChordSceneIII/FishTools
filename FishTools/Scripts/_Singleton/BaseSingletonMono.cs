@@ -49,15 +49,19 @@ namespace FishTools
             if (instance == null)
             {
                 instance = this as T;
+                DontDestroyOnLoad(this.gameObject);
+
             }
             else if (instance != this)
             {
+                DebugF.LogWarning($"重复创建单例:{this.name},已移除");
                 Destroy(gameObject);
             }
         }
         protected virtual void OnDestroy()
         {
-            instance = null;
+            if (instance == this)
+                instance = null;
         }
     }
 }

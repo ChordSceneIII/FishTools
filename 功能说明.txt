@@ -19,8 +19,6 @@ InputTool: 基于Input的封装输入输出仿照新InputSystem但是更灵活�
 
 SaveTool：简单的数据存储功能，基于Json和序列化功能
 
-SceneUI：游戏场景内的UI交互行为，仿照UGUI制作的于游戏场景内对游戏对象的UI化控制，目前包括按钮和拖拽功能，配置文件可以灵活配置射线检测的遮罩和距离
-
 TimeTool： 基于Time.time实现的时间-事件管理器，仿照DOTWEEN的时间回调制作的，但是去掉其他功能的纯时间回调器，同样也是链式调用回调事件，使用Ftimer创建自己的独立时钟，同时可以在Manager中看到每个时钟的时间轴
 
 ~OtherTools： 杂项工具，目前有简单的多线程工具，消息订阅系统，和用于Update中使用的调用限制器

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+
+//TODO：添加对Excel文件转换JSON的支持
 namespace FishTools.TextManager
 {
     //文本播放器
