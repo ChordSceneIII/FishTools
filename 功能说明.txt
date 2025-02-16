@@ -1,29 +1,20 @@
 FishTools插件工具包
 
 //项目结构//
-+FishTools
-++DEMO :功能演示
-++Editor  :编辑器拓展相关
-++Scripts :脚本定义
+ FishTools
+│  │  │  ├─ Editor
+│  │  │  ├─ Runtime
+│  │  │  │  ├─ ActionSystem 		动作(优先级队列)系统
+│  │  │  │  ├─ EasyUI		简易UI框架(支持纯键盘导航，包含各类面板，控制器以及背包系统)
+│  │  │  │  ├─ Graph	    	图节点(包含寻路算法和各种类型的节点图生成系统)                 
+│  │  │  │  ├─ InputTool		输入工具
+│  │  │  │  ├─ RayCast		射线工具
+│  │  │  │  ├─ SaveTool		存档系统（基于JSON的持久化存储方案）
+│  │  │  │  ├─ TextManager		文本对话器
+│  │  │  │  ├─ TimeTool		时间轴事件处理器
+│  │  │  │  ├─ _Attribute		特性（用于编辑器拓展使用，简化Editor编辑）
+│  │  │  │  ├─ _SerializableSet		自定义序列化集合（包含可序列化字典和监控变化字段）
+│  │  │  │  ├─ _Singleton		单例类（包括纯类单例基类，Mono单例基类，以及唯一标识实例）
+│  │  │  │  ├─ _Tools		杂项工具（包括快速TAG查找，监控器，事件系统等）
+│  │  │  ├─ Tests
 
-
-
-/*功能概述*/
-_Singleton : 单例模板基类 [[[包含一般类单例, Mono单例,唯一预制体单例
-
-ActionSystem: 基于优先级的动作系统，manager和command都实例化配置关系(基于命令模式和权重判断)
-
-EasyUI: 简单的UI框架，包含基本的打开关闭以及路径缓存以及背包系统。并且可拓展延申不同的UI面板模板,使用ScriptObject配置Prefab和脚本行为以及使用，会自动获取path不用手动配置
-
-InputTool: 基于Input的封装输入输出仿照新InputSystem但是更灵活小巧，使用广播订阅系统，无需在Update中使用 ，可拓展复杂的输入行为，，目前仅限于在脚本中配置不支持序列化在编辑器中配置映射
-
-SaveTool：简单的数据存储功能，基于Json和序列化功能
-
-TimeTool： 基于Time.time实现的时间-事件管理器，仿照DOTWEEN的时间回调制作的，但是去掉其他功能的纯时间回调器，同样也是链式调用回调事件，使用Ftimer创建自己的独立时钟，同时可以在Manager中看到每个时钟的时间轴
-
-~OtherTools： 杂项工具，目前有简单的多线程工具，消息订阅系统，和用于Update中使用的调用限制器
-
-
-
-
-/**********/
