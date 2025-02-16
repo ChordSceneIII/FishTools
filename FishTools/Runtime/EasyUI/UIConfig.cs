@@ -20,11 +20,11 @@ namespace FishTools.EasyUI
             {
                 if (uiroot == null || (uiroot != null && uiroot.gameObject.name != rootName))
                 {
-                    uiroot = FishUtility.FindByComponent<Canvas>(rootName, true)?.transform;
+                    uiroot = FishUtility.FindComponent<RectTransform>(rootName, true)?.transform;
                     if (uiroot == null)
                     {
                         uiroot = GameObject.FindObjectOfType<Canvas>(false).transform;
-                        DebugF.LogWarning($"找不到指定Canvas:{rootName},自动寻找可用Canvas");
+                        DebugF.LogWarning($"找不到指定的RectTransform:{rootName},自动寻找可用Canvas");
                     }
                 }
                 return uiroot;
@@ -181,6 +181,8 @@ namespace FishTools.EasyUI
             panel_cache.Clear();
             // DebugF.Log("页面缓存已清除");
         }
+
+        //TODO：可以单独把缓存放在单例中，ScriptObejct访问缓存就访问单例，然后单例可以对缓存内容访问(打开和关闭，不负责创建和销毁)
 
     }
 }

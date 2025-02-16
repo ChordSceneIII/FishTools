@@ -24,11 +24,19 @@ MonoBehaviour:
         rootName: Canvas
     - key: "\u5546\u57CE"
       value:
-        basepanel: {fileID: 3093544559133717602, guid: 2cf9c732deb8ba94c941e5d59bd3bfb5, type: 3}
+        basepanel: {fileID: 7323208840216738193, guid: 2cf9c732deb8ba94c941e5d59bd3bfb5, type: 3}
+        rootName: Canvas
+    - key: "\u5546\u57CE1"
+      value:
+        basepanel: {fileID: 3093544559133717602, guid: 8691a9f8959e9b4409939e6399ec22d6, type: 3}
         rootName: Canvas
   panel_cache:
     _pairs:
     - key: "\u754C\u9762"
       value: {fileID: 0}
     - key: "\u5546\u57CE"
+      value: {fileID: 0}
+    - key: "\u80CC\u5305"
+      value: {fileID: 0}
+    - key: "\u5546\u57CE1"
       value: {fileID: 0}

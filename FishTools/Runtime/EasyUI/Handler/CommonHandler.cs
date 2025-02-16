@@ -42,7 +42,6 @@ namespace FishTools.EasyUI
         [ReadOnly, SerializeField] private bool isInside = false;
         private List<Transform> childs;
         private GameObject lastChild;//记录上一选择的子项
-        private bool lastInteractable;//记录上一交互状态
 
         protected override void Start()
         {
@@ -50,79 +49,73 @@ namespace FishTools.EasyUI
             //获取子项组件
             childs = new List<Transform>();
             childs = GetComponentsInChildren<Transform>(true).ToList();
-            lastInteractable = !IsInteractable();
         }
 
-        private void Update()
+        protected override void Update()
         {
-            if (IsInteractable())
+            base.Update();
+            if ((eventType & EventType.Hover) != 0 && isInside)
             {
-                if ((eventType & EventType.Hover) != 0 && isInside)
-                {
-                    hoverEvent?.Invoke();
-                }
+                hoverEvent?.Invoke();
+            }
 
-                if ((eventType & EventType.OutHover) != 0 && !isInside)
-                {
-                    outHoverEvent?.Invoke();
-                }
+            if ((eventType & EventType.OutHover) != 0 && !isInside)
+            {
+                outHoverEvent?.Invoke();
+            }
 
-                if ((eventType & EventType.ClickInside) != 0 && isInside && Input.GetMouseButtonDown(0))
-                {
-                    clickInsideEvent?.Invoke();
-                }
+            if ((eventType & EventType.ClickInside) != 0 && isInside && Input.GetMouseButtonDown(0))
+            {
+                clickInsideEvent?.Invoke();
+            }
 
-                if ((eventType & EventType.ClickOutside) != 0 && !isInside && Input.GetMouseButtonDown(0))
-                {
-                    clickOutsideEvent?.Invoke();
-                }
+            if ((eventType & EventType.ClickOutside) != 0 && !isInside && Input.GetMouseButtonDown(0))
+            {
+                clickOutsideEvent?.Invoke();
+            }
 
-                if (((eventType & EventType.ChildEnter) != 0) || ((eventType & EventType.ChildExit) != 0))
+            if (((eventType & EventType.ChildEnter) != 0) || ((eventType & EventType.ChildExit) != 0))
+            {
+                //记录上一项
+                if (EventSystem.current.currentSelectedGameObject != lastChild)
                 {
-                    //记录上一项
-                    if (EventSystem.current.currentSelectedGameObject != lastChild)
+                    lastChild = EventSystem.current.currentSelectedGameObject;
+
+                    //选择对象包括子项时
+                    if (lastChild != null && childs.Contains(lastChild.transform))
                     {
-                        lastChild = EventSystem.current.currentSelectedGameObject;
-
-                        //选择对象包括子项时
-                        if (lastChild != null && childs.Contains(lastChild.transform))
+                        if ((eventType & EventType.ChildEnter) != 0)
                         {
-                            if ((eventType & EventType.ChildEnter) != 0)
-                            {
-                                childEnterEvent?.Invoke();
-                            }
+                            childEnterEvent?.Invoke();
                         }
-                        //离开时
-                        else if ((eventType & EventType.ChildExit) != 0)
-                        {
-                            childExitEvent?.Invoke();
-                        }
-
                     }
+                    //离开时
+                    else if ((eventType & EventType.ChildExit) != 0)
+                    {
+                        childExitEvent?.Invoke();
+                    }
+
                 }
             }
+        }
 
-            if (IsInteractable() != lastInteractable)
+        protected override void OnInteractableChanged(bool interactable)
+        {
+            if (interactable)
             {
-                lastInteractable = interactable;
-
-                if (interactable)
-                {
-                    if ((eventType & EventType.OnInteractable) != 0) onInteractableEvent?.Invoke();
-                }
-                else
-                {
-                    if ((eventType & EventType.OffInteractable) != 0) offInteractableEvent?.Invoke();
-                }
+                if ((eventType & EventType.OnInteractable) != 0) onInteractableEvent?.Invoke();
             }
-
+            else
+            {
+                if ((eventType & EventType.OffInteractable) != 0) offInteractableEvent?.Invoke();
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             isInside = true;
 
-            if (IsInteractable())
+            if (interactable)
             {
                 if ((eventType & EventType.Enter) != 0)
                 {
@@ -135,7 +128,7 @@ namespace FishTools.EasyUI
         {
             isInside = false;
 
-            if (IsInteractable())
+            if (interactable)
             {
                 if ((eventType & EventType.Exit) != 0)
                 {
@@ -146,7 +139,7 @@ namespace FishTools.EasyUI
 
         public void OnSelect(BaseEventData eventData)
         {
-            if (IsInteractable())
+            if (interactable)
             {
                 if ((eventType & EventType.Enter) != 0)
                 {
@@ -157,7 +150,7 @@ namespace FishTools.EasyUI
 
         public void OnDeselect(BaseEventData eventData)
         {
-            if (IsInteractable())
+            if (interactable)
             {
                 if ((eventType & EventType.Exit) != 0)
                 {

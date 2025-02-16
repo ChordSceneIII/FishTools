@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using FishTools.EasyUI;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
+
 
 namespace FishTools.Graph
 {
+    /// <summary>
+    /// 图管理器（核心结构）
+    /// </summary>
     public class GraphUI : MonoBehaviour
     {
         [Header("GraphManager设置")]
@@ -15,28 +18,60 @@ namespace FishTools.Graph
         [Header("数据和引用")]
         [ReadOnly, Label("自增器")] public int count_recorder = 0;
         [Label("连接引用")] public DictionarySer<Connection, ConnectionUI> lines = new DictionarySer<Connection, ConnectionUI>();
-        [Label("节点引用")] public DictionarySer<int, NodeUI> nodes = new DictionarySer<int, NodeUI>();
-        [ReadOnly, SerializeField] private GameObject _ConnectionObjects;
-        public GameObject ConnectionObjects
+        public DictionarySer<Connection, int> temp_connections
         {
             get
             {
-                if (_ConnectionObjects == null)
+                DictionarySer<Connection, int> temp = new DictionarySer<Connection, int>();
+                foreach (var line in lines)
                 {
-                    _ConnectionObjects = new GameObject("连接线");
-                    _ConnectionObjects.transform.SetParent(transform);
+                    temp.Add(line.Key, line.Value.weight.field);
                 }
-                return _ConnectionObjects;
+                return temp;
             }
-            set { _ConnectionObjects = value; }
+
+        }
+        [Label("节点引用")] public DictionarySer<int, NodeUI> nodes = new DictionarySer<int, NodeUI>();
+        [ReadOnly, SerializeField] private GameObject _lineObjs;
+        public GameObject lineObjs
+        {
+            get
+            {
+                if (_lineObjs == null)
+                {
+                    _lineObjs = new GameObject("lineObjs");
+                    lineObjs.transform.SetParent(transform);
+                }
+                return _lineObjs;
+            }
+            set { _lineObjs = value; }
         }
 
         private void Start()
         {
             if (linePrefab == null) { DebugF.LogError("linePrefab预制体未设置"); return; }
 
-            LoadGraph();
+            // LoadGraph();
         }
+
+        /// <summary>
+        /// 初始化GraphUI
+        /// </summary>
+        public void AfterClear(Action action)
+        {
+            count_recorder = 0;
+            nodes.Clear();
+            lines.Clear();
+
+            List<Transform> childs = new List<Transform>();
+            foreach (Transform child in transform)
+            {
+                childs.Add(child);
+            }
+
+            FMonitor.AfterDestory(childs).OnComplete(action);
+        }
+
 
         /// <summary>
         /// 初始化GraphManager
@@ -45,7 +80,7 @@ namespace FishTools.Graph
         public void LoadGraph()
         {
             InitNodes();
-            InitLines();
+            InitLines(graph.connections.ToDic());
         }
 
         [DrawButton("保存数据")]
@@ -56,6 +91,10 @@ namespace FishTools.Graph
             {
                 graph.ConnectNode(line.Key, line.Value.weight.field);
             }
+
+#if UNITY_EDITOR
+            graph.SetDirty();
+#endif
             DebugF.LogColor(ColorCode.Green, "保存成功");
         }
 
@@ -68,7 +107,7 @@ namespace FishTools.Graph
 
             if (lines.ContainsKey(connection)) { DebugF.LogWarning("已存在连接"); return; }
 
-            var new_line = Instantiate(linePrefab, ConnectionObjects.transform);
+            var new_line = Instantiate(linePrefab, lineObjs.transform);
             var start = nodes[connection.from];
             var end = nodes[connection.to];
 
@@ -110,12 +149,12 @@ namespace FishTools.Graph
         /// <summary>
         /// 更新所有连接
         /// </summary>
-        public void InitLines()
+        public void InitLines(Dictionary<Connection, int> connections)
         {
-            FishUtility.DestroyAllChilds(ConnectionObjects.transform);
+            FishUtility.DestroyAllChilds(lineObjs.transform);
             lines.Clear();
 
-            foreach (var connection in graph.connections)
+            foreach (var connection in connections)
             {
                 Connect(connection.Key, connection.Value);
             }
@@ -130,9 +169,9 @@ namespace FishTools.Graph
         {
             count_recorder = 0;
             nodes.Clear();
-            foreach (Transform child in transform)
+            var new_nodes = GetComponentsInChildren<NodeUI>();
+            foreach (var node in new_nodes)
             {
-                var node = child.GetComponent<NodeUI>();
                 if (node != null)
                 {
                     RecordNode(node);
@@ -140,9 +179,5 @@ namespace FishTools.Graph
             }
             DebugF.Log("获取节点完成");
         }
-
     }
-
-    //TODO：先完成基本的Graph，然后在游戏中对其拓展层级观念，房间逻辑按住每一层级设置，并且制作依赖种子的房间系统
-    //TOODO: 利用种子生成房间，并为不同的房间添加价值也就是权重，利用最短路径求解最有价值的路径
 }

@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 namespace FishTools
 {
 
@@ -14,6 +11,9 @@ namespace FishTools
     /// </summary>
     public static class FishUtility
     {
+        /// <summary>
+        /// 判断是否为null(空引用)或Null(丢失引用)
+        /// </summary>
         public static bool IsNull(object item)
         {
             if (item == null || item.Equals(null))
@@ -22,6 +22,38 @@ namespace FishTools
             }
             return false;
         }
+
+        /// <summary>
+        /// <para>懒加载 (针对Component)</para>
+        /// <para>type =0 self , =1: parent =2: children</para>
+        /// </summary>
+        public static T LazyGet<L, T>(L instance, ref T component, int type = 0) where T : Component where L : Component
+        {
+            if (FishUtility.IsNull(component))
+            {
+                if (instance != null)
+                {
+                    switch (type)
+                    {
+                        case 0:
+                            component = instance.GetComponent<T>();
+                            break;
+                        case 1:
+                            component = instance.GetComponentInParent<T>(true);
+                            break;
+                        case 2:
+                            component = instance.GetComponentInChildren<T>(true);
+                            break;
+                    }
+                }
+                else
+                {
+                    DebugF.LogError("访问的是空实例");
+                }
+            }
+            return component;
+        }
+
         /// <summary>
         /// @替换旧对象为新对象，同时保持旧对象的位置和父级关系。
         /// </summary>
@@ -43,7 +75,7 @@ namespace FishTools
         /// <summary>
         /// @在场景中寻找特定类型特定名字的物体
         /// </summary>
-        public static T FindByComponent<T>(string name, bool includeInactive = false) where T : Component
+        public static T FindComponent<T>(string name, bool includeInactive = false) where T : Component
         {
             return GameObject.FindObjectsOfType<T>(includeInactive).FirstOrDefault(obj => obj.name == name);
         }
@@ -72,68 +104,6 @@ namespace FishTools
             {
                 GameObject.Destroy(obj.gameObject);
             }
-        }
-
-        /// <summary>
-        /// @判断两个Rect物体的相对位置关系()
-        /// </summary>
-        public static Vector2 CompareRectDirection(RectTransform child, RectTransform parent, bool overflow = false)
-        {
-            Vector2 direction = Vector2.zero;
-
-            Vector2 childMin = child.TransformPoint(child.rect.min);
-            Vector2 childMax = child.TransformPoint(child.rect.max);
-            Vector2 parentMin = parent.TransformPoint(parent.rect.min);
-            Vector2 parentMax = parent.TransformPoint(parent.rect.max);
-
-            if (childMax.x < parentMin.x)
-            {
-                direction.x = -1;
-            }
-            else if (overflow && childMin.x < parentMin.x)
-            {
-                direction.x = -1;
-            }
-
-            if (childMin.x > parentMax.x)
-            {
-                direction.x = 1;
-            }
-            else if (overflow && childMax.x > parentMax.x)
-            {
-                direction.x = 1;
-            }
-
-            if (childMax.y < parentMin.y)
-            {
-                direction.y = -1;
-            }
-            else if (overflow && childMin.y < parentMin.y)
-            {
-                direction.y = -1;
-            }
-
-            if (childMin.y > parentMax.y)
-            {
-                direction.y = 1;
-            }
-            else if (overflow && childMax.y > parentMax.y)
-            {
-                direction.y = 1;
-            }
-
-            return direction;
-        }
-
-        /// <summary>
-        /// @条件监视器（帧循环）
-        /// </summary>
-        public static F_Monitor FMonitor(string name = "F_Monitor")
-        {
-            if (!Application.isPlaying) return null;
-            // 创建一个观察者对象
-            var monitor = new GameObject($"{name}_{DateTime.Now}").AddComponent<F_Monitor>();
-            return monitor;
         }
 
         /// <summary>
@@ -188,6 +158,7 @@ namespace FishTools
             {
                 foreach (Transform child in parent)
                 {
+
                     GameObject.Destroy(child.gameObject);
                 }
             }
@@ -199,41 +170,6 @@ namespace FishTools
                 }
             }
 
-        }
-        /// <summary>
-        /// @物体完全销毁回调
-        /// </summary>
-        public static F_Monitor AfterDestory(GameObject obj)
-        {
-            if (!Application.isPlaying) return null;
-
-            return FMonitor("销毁监控").Condition(() => obj == null, 0f);
-        }
-
-        /// <summary>
-        /// @所有物体完全销毁回调
-        /// </summary>
-        public static F_Monitor AfterDestory<T>(T[] objs) where T : Component
-        {
-            if (!Application.isPlaying) return null;
-
-            return FMonitor($"销毁监控:[{objs.Length}]")
-            .OnStart(() =>
-            {
-                foreach (var obj in objs)
-                {
-                    if (!FishUtility.IsNull(obj)) GameObject.Destroy(obj.gameObject);
-                }
-            })
-            .Condition(() =>
-               {
-                   foreach (var obj in objs)
-                   {
-                       if (!FishUtility.IsNull(obj))
-                           return false;
-                   }
-                   return true;
-               }, 0f);
         }
 
         /// <summary>
@@ -295,94 +231,5 @@ namespace FishTools
         }
     }
 
-    #endregion
-
-    #region 工具Mono脚本
-
-    // 观察者脚本，检测物体是否已满足条件
-    public sealed class F_Monitor : MonoBehaviour
-    {
-        private event Action onUpdateEvent;
-        private event Action onCompleteEvent;
-        private event Action onStartEvent;
-        public F_Monitor OnUpdate(Action action)
-        {
-            onUpdateEvent += action; // 订阅事件
-            return this;
-        }
-        public F_Monitor OnComplete(Action action)
-        {
-            onCompleteEvent += action; // 订阅事件
-            return this;
-        }
-        public F_Monitor OnStart(Action action)
-        {
-            onStartEvent += action; // 订阅事件
-            return this;
-        }
-
-        public F_Monitor Condition(Func<bool> condition, float delay = 0.01f)
-        {
-            StartCoroutine(ConditionWatcher(condition, delay));
-            return this;
-        }
-        public F_Monitor Delay(float duration)
-        {
-            StartCoroutine(WaitTimeWatcher(duration));
-            return this;
-        }
-
-        // 通用条件监控：监控条件是否满足并触发回调
-        private IEnumerator ConditionWatcher(Func<bool> condition, float delay = 0.01f)
-        {
-            onStartEvent?.Invoke();
-
-            yield return null;
-
-            // 等待条件满足
-            while (!condition())
-            {
-                onUpdateEvent?.Invoke();
-                yield return null;
-            }
-
-            yield return new WaitForSeconds(delay);
-
-            // 销毁监视器对象自身
-            Destroy(gameObject);
-
-            // 条件满足后执行回调
-            try { onCompleteEvent?.Invoke(); }
-            catch { }
-        }
-
-        private IEnumerator WaitTimeWatcher(float duration)
-        {
-            float startTime = Time.time;
-            onStartEvent?.Invoke();
-
-            // 在等待期间每帧触发 onUpdateEvent
-            while (Time.time - startTime < duration)
-            {
-                onUpdateEvent?.Invoke(); // 触发更新事件
-                yield return null; // 等待下一帧
-            }
-
-            // 销毁监视器对象自身
-            Destroy(gameObject);
-
-            // 等待时间完成后执行
-            try { onCompleteEvent?.Invoke(); }
-            catch { }
-        }
-
-        private void OnDestroy()
-        {
-            // 清空事件订阅,防止悬挂
-            onUpdateEvent = null;
-            onCompleteEvent = null;
-            onStartEvent = null;
-        }
-    }
     #endregion
 }

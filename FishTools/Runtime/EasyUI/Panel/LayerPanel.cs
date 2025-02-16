@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -7,27 +7,28 @@ using UnityEngine.UIElements;
 namespace FishTools.EasyUI
 {
     /// <summary>
-    /// 顺序面板，可以自动切换聚焦目标
+    /// <para>顺序面板，可以自动切换聚焦目标</para>
+    /// <para>若要嵌套使用，请把Group的ignoreParent勾选</para>
     /// </summary>
     [RequireComponent(typeof(CanvasGroup))]
     public class LayerPanel : BasePanel
     {
-        [Label("取消时失去焦点")] public bool cancelFocus = true;
-        [Label("取消时关闭面板")] public bool cancelClose = true;
+        [SerializeField, ReadOnly] private CanvasGroup _group;
+        public CanvasGroup Group => FishUtility.LazyGet(this, ref _group);
+        [SerializeField] private bool cancelClose = true;
         [Label("保持首选项")] public bool keepLastSelect;
         [Label("首选项")] public Selectable firstSelect;
-        [Label("保持上级面板")] public bool keepLastPanel;
-        [Label("上级面板")] public LayerPanel lastPanel;
-        [Label("取消事件")] public UnityEvent cancelEvent;
+        [Label("使用全局的取消按钮")] public bool useDefaultCancel = true;
+        [ConditionalField("useDefaultCancel", false)] public string cancelButton = "Cancel";
+        [SerializeField, ReadOnly] private LayerPanel _lastpanel = null;
+        public UnityEvent onCancelEvent = new();
 
-        private CanvasGroup group;
-        public CanvasGroup Group => group ??= GetComponent<CanvasGroup>();
-        private LayerInputModule LayerModule => LayerInputModule.Instance;
+        private LayerInputModule Module => LayerInputModule.Instance;
         public Selectable FirstSelect
         {
             get
             {
-                if (FishUtility.IsNull(firstSelect))
+                if (FishUtility.IsNull(firstSelect) || firstSelect.interactable == false)
                 {
                     foreach (var selectable in GetComponentsInChildren<Selectable>())
                     {
@@ -47,61 +48,48 @@ namespace FishTools.EasyUI
             }
         }
 
-
         private void OnEnable()
         {
-            Enter();
+            Focus();
         }
         private void OnDisable()
         {
             if (gameObject.scene.isLoaded == false) return;
-            Exit();
+
+            Module.LayerChains.Remove(this);
+
+            Module.LayerChains.LastOrDefault()?.Focus();
+
         }
 
-        internal void Enter()
+        public void Cancel()
         {
-            if (!keepLastPanel && LayerModule.currentpanel != this)
-                lastPanel = LayerModule.currentpanel;
+            onCancelEvent?.Invoke();
 
-            lastPanel?.UnFocus();
-            Focus();
-        }
-
-        internal void Exit()
-        {
-
-            if (cancelFocus)
-                UnFocus();
-
-            lastPanel?.Focus();
-        }
-
-        internal void OnCancelEvent()
-        {
-            Exit();
+            Group.interactable = false;
 
             if (cancelClose)
                 Close();
 
-            cancelEvent?.Invoke();
         }
 
-        private void Focus()
+        public void Focus()
         {
-            if (gameObject.activeInHierarchy)
-            {
-                Group.interactable = true;
+            _lastpanel = Module.LayerChains.LastOrDefault();
 
-                FirstSelect?.Select();
+            if (_lastpanel != null)
+                _lastpanel.Group.interactable = false;
 
-                transform.SetAsLastSibling();
+            Module.LayerChains.Remove(this);
+            Module.LayerChains.Add(this);
 
-                LayerModule.currentpanel = this;
-            }
+            Group.interactable = true;
+            FirstSelect?.Select();
+
+            transform.SetAsLastSibling();
+
+            Module.currentpanel = this;
         }
-        private void UnFocus()
-        {
-            Group.interactable = false;
-        }
+
     }
 }

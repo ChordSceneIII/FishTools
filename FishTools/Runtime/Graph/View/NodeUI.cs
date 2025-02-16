@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 namespace FishTools.Graph
 {
+    /// <summary>
+    /// 节点UI
+    /// </summary>
     [RequireComponent(typeof(RectTransform))]
     public class NodeUI : MonoBehaviour
     {
@@ -11,17 +14,7 @@ namespace FishTools.Graph
         public Transform inport => _inport;
         public Transform outport => _outport;
         private RectTransform _rectTransform;
-        public RectTransform rectTransform
-        {
-            get
-            {
-                if (FishUtility.IsNull(_rectTransform))
-                {
-                    _rectTransform = GetComponent<RectTransform>();
-                }
-                return _rectTransform;
-            }
-        }
+        public RectTransform rectTransform => FishUtility.LazyGet(this, ref _rectTransform);
 
         public int NID
         {
@@ -33,17 +26,12 @@ namespace FishTools.Graph
         {
             if (inport == null)
             {
-                Debug.LogError($"{name} 入口 未设置");
+                _inport = transform;
             }
             if (outport == null)
             {
-                Debug.LogError($"{name} 出口 未设置");
+                _outport = transform;
             }
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-
         }
     }
 }

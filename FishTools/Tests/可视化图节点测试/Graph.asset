@@ -16,5 +16,33 @@ MonoBehaviour:
     _pairs:
     - key:
         from: 1
+        to: 3
+      value: 3
+    - key:
+        from: 2
+        to: 3
+      value: 1
+    - key:
+        from: 2
+        to: 1
+      value: 1
+    - key:
+        from: 5
+        to: 3
+      value: 1
+    - key:
+        from: 3
+        to: 5
+      value: 1
+    - key:
+        from: 1
         to: 2
+      value: 1
+    - key:
+        from: 3
+        to: 4
+      value: 1
+    - key:
+        from: 4
+        to: 5
       value: 1

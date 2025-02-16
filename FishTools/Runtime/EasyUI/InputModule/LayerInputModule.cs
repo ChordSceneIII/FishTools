@@ -12,43 +12,48 @@ namespace FishTools.EasyUI
     [RequireComponent(typeof(EventSystem))]
     public class LayerInputModule : StandaloneInputModule
     {
-        [Label("当前面板")] public LayerPanel currentpanel;
-        [Label("当前选择"), SerializeField, ReadOnly] private GameObject selectobj;
+        [Label("根面板(菜单)")] public LayerPanel _rootPanel;
+        [Label("当前面板"), SerializeField, ReadOnly] private LayerPanel _currentpanel;
+        public LayerPanel currentpanel
+        {
+            get
+            {
+                if (_currentpanel == null)
+                {
+                    _currentpanel = layerChains.FirstOrDefault();
+                }
+                return _currentpanel;
+            }
+            set => _currentpanel = value;
+        }
 
+        [Label("当前选择"), SerializeField, ReadOnly] private GameObject _selectobj;
         public Selectable currentSelectable
         {
             get
             {
-                selectobj = EventSystem.current.currentSelectedGameObject;
-                if (selectobj != null)
-                    return selectobj.GetComponent<Selectable>();
+                _selectobj = EventSystem.current.currentSelectedGameObject;
+                if (_selectobj != null)
+                    return _selectobj.GetComponent<Selectable>();
                 else
                     return null;
             }
         }
+
+        [SerializeField, ReadOnly] private List<LayerPanel> layerChains = new List<LayerPanel>();
+        public List<LayerPanel> LayerChains => layerChains;
+
+        private static LayerInputModule _instance;
         public static LayerInputModule Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = EventSystem.current.GetComponent<LayerInputModule>();
+                    _instance = EventSystem.current.GetComponent<LayerInputModule>();
                 }
 
-                return instance;
-            }
-        }
-        private static LayerInputModule instance;
-
-        private void Update()
-        {
-            if (currentpanel != null && selectobj == null)
-            {
-                //失去选择目标时自动修复
-                if (Input.GetButtonDown(horizontalAxis) || Input.GetButtonDown(verticalAxis))
-                {
-                    currentpanel.FirstSelect?.Select();
-                }
+                return _instance;
             }
         }
 
@@ -61,31 +66,41 @@ namespace FishTools.EasyUI
                 return;
             }
 
-            //自动修正currentpanel
-            if (currentpanel == null || currentpanel.gameObject.activeInHierarchy == false)
+            if (currentpanel != null && _selectobj == null)
             {
-                currentpanel = FindObjectOfType<LayerPanel>(false);
-                currentpanel?.Enter();
-            }
-
-            if (currentpanel != null)
-            {
-                //修改首选项
-                if (!currentpanel.keepLastSelect && currentSelectable?.transform.IsChildOf(currentpanel.transform) == true)
+                //失去选择目标时自动修复
+                if (Input.GetButtonDown(horizontalAxis) || Input.GetButtonDown(verticalAxis))
                 {
-                    currentpanel.FirstSelect = currentSelectable;
-                }
-
-                if (Input.GetButtonDown(cancelButton))
-                {
-                    currentpanel.OnCancelEvent();
+                    currentpanel.FirstSelect?.Select();
                 }
             }
 
+            //修改首选项
+            if (currentpanel != null && !currentpanel.keepLastSelect && currentSelectable?.transform.IsChildOf(currentpanel.transform) == true)
+            {
+                currentpanel.FirstSelect = currentSelectable;
+            }
+
+
+            if (currentpanel == _rootPanel && layerChains.Count <= 1) return;
+
+            if (layerChains.Count == 0)
+            {
+                _rootPanel.Open();
+                _rootPanel.Focus();
+                return;
+            }
+
+            if (currentpanel.useDefaultCancel == false && Input.GetButtonDown(currentpanel.cancelButton))
+            {
+                currentpanel.Cancel();
+            }
+
+            if (currentpanel.useDefaultCancel == true && Input.GetButtonDown(cancelButton))
+            {
+                currentpanel.Cancel();
+            }
         }
-
     }
-
-
 }
 

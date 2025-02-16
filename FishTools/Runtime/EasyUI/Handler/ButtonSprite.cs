@@ -45,7 +45,6 @@ namespace FishTools.EasyUI
         [ConditionalField("Ttype", Transtype.Animation)] public AnimationClip unInteractAnim;
         public UnityEvent clickDownEvent;
         private bool isInside;
-        private bool wasInteractable = true;//记录interactable状态
 
         private void OnEnable()
         {
@@ -55,14 +54,14 @@ namespace FishTools.EasyUI
                 return;
             }
 
-            wasInteractable = !IsInteractable();
 
             Recover();
         }
 
-        private void Update()
+        protected override void Update()
         {
-            if (IsInteractable())
+            base.Update();
+            if (interactable)
             {
                 //按下
                 if ((isInside && Input.GetMouseButtonDown(0)) || (isKey && Input.GetKeyDown(key)) || (!isKey && Input.GetButtonDown(button)))
@@ -77,16 +76,14 @@ namespace FishTools.EasyUI
 
             }
 
-            if (wasInteractable != IsInteractable())
-            {
-                wasInteractable = interactable;
+        }
 
-                if (interactable)
-                    Recover();
-                else
-                    UnInteract();
-            }
-
+        protected override void OnInteractableChanged(bool interactable)
+        {
+            if (interactable)
+                Recover();
+            else
+                UnInteract();
         }
 
         public void OnPointerEnter(PointerEventData eventData)

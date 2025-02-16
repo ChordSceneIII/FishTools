@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +6,8 @@ using UnityEngine.Events;
 namespace FishTools
 {
     /// <summary>
-    /// 监听字段(当字段改变时触发事件）
+    /// <para> 监听字段(当字段改变时触发事件）</para>
+    /// <para> 通过调用field访问器来触发 </para>
     /// </summary>
     [Serializable]
     public class ObserveField<T> : IObserveEvent where T : struct
@@ -29,16 +29,24 @@ namespace FishTools
             get => _field;
             set
             {
-                if (!_field.Equals(value))
-                {
-                    _field = value;
-                    ObserveEvent();
-                }
+                _field = value;
+                Invoke();
             }
         }
 
-        public void AddListener(UnityAction action) => @event.AddListener(action);
-        public void AddListener(UnityAction<T> action) => @eventT.AddListener(action);
+        public ObserveField<T> AddListener(UnityAction action)
+        {
+            @event.AddListener(action);
+            return this;
+        }
+
+        public ObserveField<T> AddListener(UnityAction<T> action)
+        {
+            @eventT.AddListener(action);
+            return this;
+
+        }
+
         public void RemoveListener(UnityAction action) => @event.RemoveListener(action);
         public void RemoveListener(UnityAction<T> action) => @eventT.RemoveListener(action);
         public void RemoveAllListeners()
@@ -47,7 +55,7 @@ namespace FishTools
             @eventT.RemoveAllListeners();
         }
 
-        public void ObserveEvent()
+        public void Invoke()
         {
             @event?.Invoke();
             @eventT?.Invoke(_field);
@@ -55,13 +63,13 @@ namespace FishTools
 
         public void Refresh()
         {
-            ObserveEvent();
+            Invoke();
         }
     }
 
     public interface IObserveEvent
     {
-        void ObserveEvent();
+        void Invoke();
     }
 
 #if UNITY_EDITOR
@@ -94,7 +102,7 @@ namespace FishTools
                 if (targetObject is IObserveEvent invokeable)
                 {
                     // 调用事件
-                    invokeable.ObserveEvent();
+                    invokeable.Invoke();
                 }
             }
 

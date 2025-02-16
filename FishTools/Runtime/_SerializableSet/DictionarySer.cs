@@ -28,6 +28,19 @@ namespace FishTools
     [Serializable]
     public class DictionarySer<TKey, TValue> : ISerializationCallbackReceiver
     {
+
+        public DictionarySer()
+        { }
+
+        public DictionarySer(Dictionary<TKey, TValue> new_dic)
+        {
+            Clear();
+            foreach (var kvp in new_dic)
+            {
+                this[kvp.Key] = kvp.Value;
+            }
+        }
+
         // 序列化列表 (只用于显示和序列化)
         [SerializeField]
         private List<SerializePair<TKey, TValue>> _pairs = new List<SerializePair<TKey, TValue>>();
@@ -186,7 +199,8 @@ namespace FishTools
         {
             get
             {
-                _dict.TryGetValue(key, out TValue value);
+                if (!_dict.TryGetValue(key, out TValue value))
+                    DebugF.LogError($"Key {key} 不存在于 Dictionary 中。");
                 return value;
             }
             set
@@ -244,7 +258,7 @@ namespace FishTools
         /// <summary>
         /// 从 Dictionary 转换到 DictionarySerializable
         /// </summary>
-        public void Copy(Dictionary<TKey, TValue> dict)
+        public void CopyFromDic(Dictionary<TKey, TValue> dict)
         {
             Clear();
             foreach (var kvp in dict)
@@ -252,10 +266,26 @@ namespace FishTools
                 this[kvp.Key] = kvp.Value;
             }
         }
-        public void Copy(DictionarySer<TKey, TValue> dict)
+
+        public Dictionary<TKey, TValue> ToDic()
+        {
+            Dictionary<TKey, TValue> new_dic = new Dictionary<TKey, TValue>();
+
+            foreach (var kvp in _dict)
+            {
+                new_dic.Add(kvp.Key, kvp.Value);
+            }
+            return new_dic;
+        }
+
+
+        /// <summary>
+        /// 浅拷贝
+        /// </summary>
+        public void Copy(DictionarySer<TKey, TValue> new_dic)
         {
             Clear();
-            foreach (var kvp in dict)
+            foreach (var kvp in new_dic)
             {
                 this[kvp.Key] = kvp.Value;
             }

@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace FishTools.EasyUI
 {
@@ -8,15 +11,7 @@ namespace FishTools.EasyUI
     public class BasePanel : MonoBehaviour
     {
         RectTransform m_rectTransform;
-        public RectTransform rectTransform
-        {
-            get
-            {
-                if (m_rectTransform == null)
-                    m_rectTransform = GetComponent<RectTransform>();
-                return m_rectTransform;
-            }
-        }
+        public RectTransform rectTransform => FishUtility.LazyGet(this, ref m_rectTransform);
 
         public virtual void Repeat()
         {
@@ -24,14 +19,25 @@ namespace FishTools.EasyUI
         }
         public virtual void Open()
         {
+            Invoke("Open_", 0);//TOOD 暂时先用反射，后续用活跃单例来代替执行协程
+        }
+        public virtual void Close()
+        {
+            Invoke("Close_", 0);//TOOD 暂时先用反射，后续用活跃单例来代替执行协程
+        }
+
+        private void Open_()
+        {
             if (gameObject.activeSelf == false)
                 gameObject.SetActive(true);
         }
-        public virtual void Close()
+
+        private void Close_()
         {
             if (gameObject.activeSelf == true)
                 gameObject.SetActive(false);
         }
+
     }
 
 }

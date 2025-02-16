@@ -33,8 +33,9 @@ namespace FishTools
         [ConditionalField("activeEvents", LifeCycleEvents.Update)] public UnityEvent onUpdate;
         [ConditionalField("activeEvents", LifeCycleEvents.FixedUpdate)] public UnityEvent onFixedUpdate;
         [ConditionalField("activeEvents", LifeCycleEvents.LateUpdate)] public UnityEvent onLateUpdate;
-        [ConditionalField("activeEvents", LifeCycleEvents.OnDisable)] public UnityEvent onDisable;
         [ConditionalField("activeEvents", LifeCycleEvents.OnEnable)] public UnityEvent onEnable;
+
+        [ConditionalField("activeEvents", LifeCycleEvents.OnDisable)] public UnityEvent onDisable;
         [ConditionalField("activeEvents", LifeCycleEvents.Destroy)] public UnityEvent onDestroy;
         [ConditionalField("activeEvents", LifeCycleEvents.ApplicationQuit)] public UnityEvent onApplicationQuit;
 

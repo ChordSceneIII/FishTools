@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace FishTools.EasyUI
 {
@@ -29,15 +28,7 @@ namespace FishTools.EasyUI
         private Canvas canvas;
         [SerializeField] private RectTransform canvas_rectTrans;
         private RectTransform _rectTransform;
-        public RectTransform rectTransform
-        {
-            get
-            {
-                if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
-                return _rectTransform;
-            }
-        }
-
+        public RectTransform rectTransform => FishUtility.LazyGet(this, ref _rectTransform);
         /// <summary>
         /// 设置跟随目标
         /// </summary>
@@ -57,15 +48,16 @@ namespace FishTools.EasyUI
             if (isFollow) transform.position = TargetPos();
         }
 
-        private void OnTransformParentChanged()
+        protected override void OnTransformParentChanged()
         {
+            base.OnTransformParentChanged();
             canvas = GetComponentInParent<Canvas>();
             canvas_rectTrans = canvas?.GetComponent<RectTransform>();
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (IsInteractable() && drag)
+            if (drag&&interactable)
             {
                 if (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceOverlay)
                 {
@@ -78,8 +70,9 @@ namespace FishTools.EasyUI
             }
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             UpdatePos();
             KeepInScreen();
         }
@@ -90,10 +83,14 @@ namespace FishTools.EasyUI
         // 更新位置
         public void UpdatePos()
         {
-            if (isFollow && IsInteractable() && targetTrans != null && smoothTime > 0)
+            if (interactable)
             {
-                transform.position = Vector3.Lerp(transform.position, TargetPos(), smoothTime);
+                if (isFollow && targetTrans != null && smoothTime > 0)
+                {
+                    transform.position = Vector3.Lerp(transform.position, TargetPos(), smoothTime);
+                }
             }
+
         }
 
         /// <summary>

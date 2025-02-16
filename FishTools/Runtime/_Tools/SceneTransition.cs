@@ -19,15 +19,7 @@ namespace FishTools
         [Label("进度文本")] public TextMeshProUGUI progressText;
         [Label("过渡动画")] public Animation anim;
         private Canvas _canvas;
-        public Canvas canvas
-        {
-            get
-            {
-                if (_canvas == null) _canvas = GetComponent<Canvas>();
-                return _canvas;
-            }
-        }
-
+        public Canvas canvas=>FishUtility.LazyGet(this, ref _canvas);
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);

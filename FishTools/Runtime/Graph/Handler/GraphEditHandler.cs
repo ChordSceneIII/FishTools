@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 namespace FishEditor.Graph
 {
     /// <summary>
-    /// 用于编辑连接
+    /// 用于编辑连接的控制器
     /// </summary>
     [RequireComponent(typeof(GraphUI))]
     public class GraphEditHandler : MonoBehaviour, IPointerClickHandler
@@ -16,15 +16,7 @@ namespace FishEditor.Graph
         [ReadOnly] public NodeUI start;
         [ReadOnly] public NodeUI end;
         [ReadOnly, SerializeField] private GraphUI _graphUI;
-        public GraphUI graphUI
-        {
-            get
-            {
-                if (_graphUI == null)
-                    _graphUI = GetComponent<GraphUI>();
-                return _graphUI;
-            }
-        }
+        public GraphUI graphUI => FishUtility.LazyGet(this, ref _graphUI);
         public static ConnectionUI cur_preview;
 
         private void Update()
@@ -50,7 +42,7 @@ namespace FishEditor.Graph
             //防止重复创建
             if (cur_preview != null) DestroyImmediate(cur_preview.gameObject);
 
-            cur_preview = Instantiate(preview_connection, graphUI.ConnectionObjects.transform);
+            cur_preview = Instantiate(preview_connection, graphUI.lineObjs.transform);
         }
 
         public void SetEnd(NodeUI node)
@@ -90,7 +82,6 @@ namespace FishEditor.Graph
                     SetEnd(node);
                     return;
                 }
-
             }
         }
     }

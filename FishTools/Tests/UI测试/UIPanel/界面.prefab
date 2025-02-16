@@ -146,6 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3fb0e858ac0cb64982468874fb06121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: 1
+  ingnoreCanvasGroup: 0
   isKey: 1
   button: 
   key: 258
@@ -350,7 +352,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7603638878842947880}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 9ee72c58eaa29194b8be35443d0c207a, type: 2}
+        m_TargetAssemblyTypeName: FishTools.EasyUI.UIConfig, Unity.FishTools
+        m_MethodName: OpenPanel
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u5546\u57CE1"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3428322751012961649
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,6 +790,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3fb0e858ac0cb64982468874fb06121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: 1
+  ingnoreCanvasGroup: 0
   isKey: 1
   button: 
   key: 260
@@ -793,8 +809,7 @@ GameObject:
   - component: {fileID: 174186462887858570}
   - component: {fileID: 8274928352247609070}
   - component: {fileID: 4134526872576581168}
-  - component: {fileID: 1663263082346088583}
-  - component: {fileID: 3463141150484568741}
+  - component: {fileID: 4759347724220422888}
   m_Layer: 5
   m_Name: "\u754C\u9762"
   m_TagString: Untagged
@@ -839,47 +854,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b8004f66d984b948849073d3e210acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoClose: 1
+  _group: {fileID: 0}
+  cancelClose: 1
   keepLastSelect: 0
   firstSelect: {fileID: 0}
-  keepLastPanel: 0
-  lastPanel: {fileID: 0}
-  enterEvent:
+  _lastpanel: {fileID: 0}
+  onCancelEvent:
     m_PersistentCalls:
       m_Calls: []
-  exitEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  focusEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1663263082346088583}
-        m_TargetAssemblyTypeName: FishTools.EasyUI.FadeEffector, Assembly-CSharp-firstpass
-        m_MethodName: SetVisible
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  unfocusEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1663263082346088583}
-        m_TargetAssemblyTypeName: FishTools.EasyUI.FadeEffector, Assembly-CSharp-firstpass
-        m_MethodName: SetVisible
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!225 &8274928352247609070
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -900,7 +882,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5241480950674546505}
   m_CullTransparentMesh: 1
---- !u!114 &1663263082346088583
+--- !u!114 &4759347724220422888
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -909,121 +891,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5241480950674546505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85adba2f776c4f049b4a65cc5d8b744a, type: 3}
+  m_Script: {fileID: 11500000, guid: 79598ca5208c043498961d67e7f5c288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVisible: 1
-  curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3463141150484568741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5241480950674546505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e93b8673a4e77444cb2448a3bd52fee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactable: 1
-  ingnoreCanvasGroup: 1
-  eventType: 240
-  hoverEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  outHoverEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  clickInsideEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  clickOutsideEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  enterEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1663263082346088583}
-        m_TargetAssemblyTypeName: FishTools.EasyUI.FadeEffector, Assembly-CSharp-firstpass
-        m_MethodName: SetVisible
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  exitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1663263082346088583}
-        m_TargetAssemblyTypeName: FishTools.EasyUI.FadeEffector, Assembly-CSharp-firstpass
-        m_MethodName: SetVisible
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  childEnterEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1663263082346088583}
-        m_TargetAssemblyTypeName: FishTools.EasyUI.FadeEffector, Assembly-CSharp-firstpass
-        m_MethodName: SetVisible
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  childExitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1663263082346088583}
-        m_TargetAssemblyTypeName: FishTools.EasyUI.FadeEffector, Assembly-CSharp-firstpass
-        m_MethodName: SetVisible
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  _interactable: 1
+  ingnoreCanvasGroup: 0
+  _group: {fileID: 0}
+  isVisiable:
+    _field: 1
+  duration: 0.5
+  unscale: 1
+  mode: 2
 --- !u!1 &5861964838034055996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,10 +969,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -1102,7 +980,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u5546\u57CE1"
 --- !u!1 &6692116031931249818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,6 +1115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3fb0e858ac0cb64982468874fb06121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: 1
+  ingnoreCanvasGroup: 0
   isKey: 1
   button: 
   key: 259
@@ -1534,6 +1414,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3fb0e858ac0cb64982468874fb06121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: 1
+  ingnoreCanvasGroup: 0
   isKey: 1
   button: 
   key: 257

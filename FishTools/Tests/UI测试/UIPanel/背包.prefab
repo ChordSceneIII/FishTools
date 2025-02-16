@@ -494,11 +494,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &721714857814215086
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +510,7 @@ GameObject:
   - component: {fileID: 6385415761024307529}
   - component: {fileID: 5070784279466628962}
   - component: {fileID: 8766139144609852999}
+  - component: {fileID: 7704135620749527266}
   m_Layer: 5
   m_Name: "\u80CC\u5305"
   m_TagString: Untagged
@@ -560,10 +560,7 @@ MonoBehaviour:
   firstSelect: {fileID: 0}
   keepLastPanel: 0
   lastPanel: {fileID: 0}
-  enterEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  exitEvent:
+  cancelEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!225 &5070784279466628962
@@ -590,7 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d09f3c545855a46a4688c5c8c38236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: 1
+  _interactable: 1
   ingnoreCanvasGroup: 0
   isFollow: 0
   targetTrans: {fileID: 0}
@@ -598,6 +595,27 @@ MonoBehaviour:
   smoothTime: 0.3
   drag: 1
   keepinScreen: 1
+  canvas_rectTrans: {fileID: 0}
+--- !u!114 &7704135620749527266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721714857814215086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79598ca5208c043498961d67e7f5c288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactable: 1
+  ingnoreCanvasGroup: 0
+  _group: {fileID: 0}
+  isVisiable:
+    _field: 1
+  duration: 1
+  unscale: 1
+  mode: 2
 --- !u!1 &736191188977814858
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,11 +739,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 1
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &978356937898150538
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,11 +866,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1047502487780100736
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,11 +993,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1074278572737255077
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,11 +1120,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1186083763415536161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1233,11 +1247,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1316614083829760144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,11 +1374,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1383319779951822936
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,11 +1622,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1526400381947506525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,11 +1907,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1707440486642885548
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,11 +2034,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1737661500191632595
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,11 +2161,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1823768369015284727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2359,11 +2367,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1877150622874138365
 GameObject:
   m_ObjectHideFlags: 0
@@ -2566,11 +2573,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &2219764193796850326
 GameObject:
   m_ObjectHideFlags: 0
@@ -2921,10 +2927,11 @@ MonoBehaviour:
   sample_name: testslot_
   slotSelectKey: 
   slotSubmitKey: 
-  data:
-    slot_count: 50
+  itemdatas: []
+  _data:
+    slot_count: 0
+    locked_Index: 
     items: []
-    locked_Index: 0800000009000000
 --- !u!114 &1098474926614182914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3305,11 +3312,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &3135209449103059478
 GameObject:
   m_ObjectHideFlags: 0
@@ -3510,8 +3516,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollRect: {fileID: 0}
-  rateX: 0.3
-  rateY: 0.2
+  delayTime: 0.1
+  extendTime: 0.1
+  speed: 2
+  canBreak: 0
+  lastSelect: {fileID: 0}
 --- !u!222 &5898658751257092052
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3765,11 +3774,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &3725294003318282351
 GameObject:
   m_ObjectHideFlags: 0
@@ -4051,11 +4059,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &3909693021255073860
 GameObject:
   m_ObjectHideFlags: 0
@@ -4254,11 +4261,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &3934433521218681607
 GameObject:
   m_ObjectHideFlags: 0
@@ -4777,11 +4783,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4312682705759966336
 GameObject:
   m_ObjectHideFlags: 0
@@ -4905,11 +4910,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4375602556402799976
 GameObject:
   m_ObjectHideFlags: 0
@@ -5033,11 +5037,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 1
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4434931495731629607
 GameObject:
   m_ObjectHideFlags: 0
@@ -5240,11 +5243,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4645499911158072969
 GameObject:
   m_ObjectHideFlags: 0
@@ -5447,11 +5449,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4824219483743304008
 GameObject:
   m_ObjectHideFlags: 0
@@ -5575,11 +5576,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5068850321565703286
 GameObject:
   m_ObjectHideFlags: 0
@@ -5818,11 +5818,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5134800744720760575
 GameObject:
   m_ObjectHideFlags: 0
@@ -5946,11 +5945,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5182659767936274670
 GameObject:
   m_ObjectHideFlags: 0
@@ -6074,11 +6072,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5267574125151995257
 GameObject:
   m_ObjectHideFlags: 0
@@ -6199,7 +6196,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6398236453112942661}
   m_HandleRect: {fileID: 1783257926721550857}
   m_Direction: 2
-  m_Value: 1.000001
+  m_Value: 1.0000011
   m_Size: 0.5604436
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6328,11 +6325,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5343109868823602565
 GameObject:
   m_ObjectHideFlags: 0
@@ -6456,11 +6452,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5543330581322474045
 GameObject:
   m_ObjectHideFlags: 0
@@ -6584,11 +6579,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5543399010072296867
 GameObject:
   m_ObjectHideFlags: 0
@@ -6827,11 +6821,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5667870849393547832
 GameObject:
   m_ObjectHideFlags: 0
@@ -7034,11 +7027,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5749130757761530239
 GameObject:
   m_ObjectHideFlags: 0
@@ -7399,11 +7391,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5943669207840223385
 GameObject:
   m_ObjectHideFlags: 0
@@ -7527,11 +7518,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6092691417416901001
 GameObject:
   m_ObjectHideFlags: 0
@@ -7971,11 +7961,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6313768442587961675
 GameObject:
   m_ObjectHideFlags: 0
@@ -8257,11 +8246,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6436545008722213463
 GameObject:
   m_ObjectHideFlags: 0
@@ -8464,11 +8452,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6622086194865794826
 GameObject:
   m_ObjectHideFlags: 0
@@ -8592,11 +8579,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6793780838224899192
 GameObject:
   m_ObjectHideFlags: 0
@@ -8799,11 +8785,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6832304499918277606
 GameObject:
   m_ObjectHideFlags: 0
@@ -9006,11 +8991,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6978466005526263999
 GameObject:
   m_ObjectHideFlags: 0
@@ -9134,11 +9118,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7010076692333727680
 GameObject:
   m_ObjectHideFlags: 0
@@ -9499,11 +9482,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7416548433502189458
 GameObject:
   m_ObjectHideFlags: 0
@@ -9627,11 +9609,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7519922182117347340
 GameObject:
   m_ObjectHideFlags: 0
@@ -9756,11 +9737,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7520737908900182522
 GameObject:
   m_ObjectHideFlags: 0
@@ -9963,11 +9943,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7560144115396120287
 GameObject:
   m_ObjectHideFlags: 0
@@ -10245,11 +10224,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7915072194710927018
 GameObject:
   m_ObjectHideFlags: 0
@@ -10452,11 +10430,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8123158994220074422
 GameObject:
   m_ObjectHideFlags: 0
@@ -10580,11 +10557,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8194085679690209462
 GameObject:
   m_ObjectHideFlags: 0
@@ -10841,11 +10817,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8397405881976851152
 GameObject:
   m_ObjectHideFlags: 0
@@ -10927,10 +10902,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba37d40191500984aa719c61dd54d904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCount: 1
   data:
     type: 0
-    slotIndex: 0
+    slotindex: 0
     count: 10
 --- !u!222 &263582897602997914
 CanvasRenderer:
@@ -11163,11 +11137,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8467723286451199983
 GameObject:
   m_ObjectHideFlags: 0
@@ -11765,11 +11738,10 @@ MonoBehaviour:
       m_Calls: []
   islocked: 0
   itemObj: {fileID: 0}
+  lockedImage: {fileID: 0}
+  selectImage: {fileID: 0}
   selectKey: select
   submitKey: submit
-  selectEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &9186744993194993797
 GameObject:
   m_ObjectHideFlags: 0
@@ -11890,7 +11862,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2083137242610900822}
   m_HandleRect: {fileID: 7918512623616596753}
   m_Direction: 0
-  m_Value: -0.0000035816295
+  m_Value: -0.0000038930757
   m_Size: 0.81473374
   m_NumberOfSteps: 0
   m_OnValueChanged:

@@ -190,6 +190,7 @@ RectTransform:
   m_Children:
   - {fileID: 1120178365}
   - {fileID: 756877928}
+  - {fileID: 806395925}
   m_Father: {fileID: 793230670}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -209,20 +210,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b8004f66d984b948849073d3e210acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cancelFocus: 0
+  _group: {fileID: 0}
   cancelClose: 0
   keepLastSelect: 0
   firstSelect: {fileID: 0}
-  keepLastPanel: 0
-  lastPanel: {fileID: 0}
-  enterEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  exitEvent:
+  _lastpanel: {fileID: 0}
+  onCancelEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 9ee72c58eaa29194b8be35443d0c207a, type: 2}
-        m_TargetAssemblyTypeName: FishTools.EasyUI.UIConfig, Assembly-CSharp-firstpass
+        m_TargetAssemblyTypeName: FishTools.EasyUI.UIConfig, Unity.FishTools
         m_MethodName: OpenPanel
         m_Mode: 5
         m_Arguments:
@@ -693,8 +690,10 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
-  currentpanel: {fileID: 346039682}
-  selectobj: {fileID: 0}
+  _rootPanel: {fileID: 346039682}
+  _currentpanel: {fileID: 0}
+  _selectobj: {fileID: 0}
+  layerChains: []
 --- !u!1 &793230666
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,7 +789,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 346039681}
-  - {fileID: 806395925}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -810,6 +808,8 @@ GameObject:
   - component: {fileID: 806395928}
   - component: {fileID: 806395927}
   - component: {fileID: 806395926}
+  - component: {fileID: 806395930}
+  - component: {fileID: 806395929}
   m_Layer: 5
   m_Name: follow
   m_TagString: Untagged
@@ -825,12 +825,12 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806395924}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 10.000385}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 670330519}
-  m_Father: {fileID: 793230670}
+  m_Father: {fileID: 346039681}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -896,6 +896,64 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806395924}
   m_CullTransparentMesh: 1
+--- !u!225 &806395929
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806395924}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &806395930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806395924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93b8673a4e77444cb2448a3bd52fee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactable: 1
+  ingnoreCanvasGroup: 0
+  eventType: 0
+  hoverEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  outHoverEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  clickInsideEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  clickOutsideEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  enterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  exitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  childEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  childExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offInteractableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isInside: 0
 --- !u!1 &1116835250
 GameObject:
   m_ObjectHideFlags: 0
