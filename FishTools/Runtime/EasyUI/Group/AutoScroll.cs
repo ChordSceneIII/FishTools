@@ -17,7 +17,7 @@ namespace FishTools.EasyUI
         public float delayTime = 0.1f;
         public float extendTime = 0.3f;
         public float speed = 5f;
-        public bool canBreak = false;
+        [Label("能否被打断")] public bool canBreak = false;
         [SerializeField, ReadOnly] private GameObject lastSelect = null;
 
         private void Update()

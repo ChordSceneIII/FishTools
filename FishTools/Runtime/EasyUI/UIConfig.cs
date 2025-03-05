@@ -103,6 +103,12 @@ namespace FishTools.EasyUI
             }
         }
 
+        public BasePanel ReloadPanel(string key, string name)
+        {
+            DestroyPanel(name);
+            return ForcePanel(key, name);
+        }
+
         /// <summary>
         /// 强制执行Panel，无论是否存在
         /// </summary>
@@ -181,8 +187,5 @@ namespace FishTools.EasyUI
             panel_cache.Clear();
             // DebugF.Log("页面缓存已清除");
         }
-
-        //TODO：可以单独把缓存放在单例中，ScriptObejct访问缓存就访问单例，然后单例可以对缓存内容访问(打开和关闭，不负责创建和销毁)
-
     }
 }

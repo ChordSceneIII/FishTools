@@ -81,25 +81,35 @@ namespace FishTools.EasyUI
                 currentpanel.FirstSelect = currentSelectable;
             }
 
-
-            if (currentpanel == _rootPanel && layerChains.Count <= 1) return;
-
-            if (layerChains.Count == 0)
+            //没有面板时打开根面板
+            if (LayerChains.Count==0)
             {
                 _rootPanel.Open();
-                _rootPanel.Focus();
-                return;
             }
 
+            //使用自定义的取消键
             if (currentpanel.useDefaultCancel == false && Input.GetButtonDown(currentpanel.cancelButton))
             {
+                if (currentpanel == _rootPanel && layerChains.Count <= 1)
+                {
+                    currentpanel.onCancelEvent?.Invoke();
+                    return;
+                }
+
                 currentpanel.Cancel();
             }
 
+            //使用默认的取消键
             if (currentpanel.useDefaultCancel == true && Input.GetButtonDown(cancelButton))
             {
+                if (currentpanel == _rootPanel && layerChains.Count <= 1)
+                {
+                    currentpanel.onCancelEvent?.Invoke();
+                    return;
+                }
                 currentpanel.Cancel();
             }
+
         }
     }
 }

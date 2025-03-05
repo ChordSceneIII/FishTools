@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -57,19 +58,18 @@ namespace FishTools.Graph
         /// <summary>
         /// 初始化GraphUI
         /// </summary>
-        public void AfterClear(Action action)
+        public IEnumerator Clear()
         {
             count_recorder = 0;
             nodes.Clear();
             lines.Clear();
 
-            List<Transform> childs = new List<Transform>();
             foreach (Transform child in transform)
             {
-                childs.Add(child);
+                Destroy(child.gameObject);
             }
 
-            FMonitor.AfterDestory(childs).OnComplete(action);
+            yield return null;
         }
 
 

@@ -214,6 +214,8 @@ MonoBehaviour:
   cancelClose: 0
   keepLastSelect: 0
   firstSelect: {fileID: 0}
+  useDefaultCancel: 1
+  cancelButton: Cancel
   _lastpanel: {fileID: 0}
   onCancelEvent:
     m_PersistentCalls:
@@ -1358,7 +1360,6 @@ Animation:
   - {fileID: 7400000, guid: 2f1d759125c03a34abc995d4b8e95710, type: 2}
   - {fileID: 7400000, guid: b9d4edc4f8e05eb4ea8df836935e7a45, type: 2}
   - {fileID: 7400000, guid: 7ccb961fc61f6584eaa303dbef79f1cd, type: 2}
-  - {fileID: 7400000, guid: c3175fc5a495c964b86d70cb03967b33, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0

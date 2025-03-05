@@ -19,11 +19,11 @@ namespace FishTools.EasyUI
         }
         public virtual void Open()
         {
-            Invoke("Open_", 0);//TOOD 暂时先用反射，后续用活跃单例来代替执行协程
+            FMonitor.Create().OnComplete(Open_);
         }
         public virtual void Close()
         {
-            Invoke("Close_", 0);//TOOD 暂时先用反射，后续用活跃单例来代替执行协程
+            FMonitor.Create().OnComplete(Close_);
         }
 
         private void Open_()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using UnityEditor;
 
 /// <summary>
 /// 存档系统底层逻辑，通常需要创建一个SaveManager来管理存档的配置相关
@@ -72,7 +73,7 @@ namespace FishTools.SaveTool
             string basePath;
 
 #if UNITY_EDITOR
-            basePath = Application.streamingAssetsPath;  // 编辑器下的路径
+            basePath = Application.dataPath;  // 编辑器下的路径
 #else
         basePath = Application.persistentDataPath;  // 非编辑器下的路径
 #endif

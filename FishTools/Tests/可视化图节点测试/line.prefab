@@ -146,8 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375213aa48cb67649ba4ad7b5d394712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactable: 1
-  ingnoreCanvasGroup: 0
   color:
     _field: {r: 1, g: 1, b: 1, a: 1}
   colorA: {r: 0, g: 1, b: 0, a: 1}

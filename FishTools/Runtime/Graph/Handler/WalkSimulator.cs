@@ -189,6 +189,7 @@ namespace FishTools.Graph
             {
                 //回调节点事件
                 iWalk.OnStartWalk();
+
             }
 
             //更新行走过的路线flag (连接当前与上一个节点)

@@ -42,7 +42,7 @@ namespace FishTools.TextManager
         {
             get
             {
-                return Application.streamingAssetsPath + "/TextBranch/";
+                return Application.dataPath + "/TextBranch/";
             }
         }
 

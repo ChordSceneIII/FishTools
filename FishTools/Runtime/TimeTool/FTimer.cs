@@ -23,6 +23,7 @@ namespace FishTools.TimeTool
         private AnimationCurve curve; //间隔方法的曲线
         private int intervalNum = 0; // 间隔数
         private int currentIntervalIndex = 0; // 当前间隔事件的索引
+        public int IntervalIndex => currentIntervalIndex;
 
         private Action onUpdate;
         private Action onCompleteUpdate;

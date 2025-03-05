@@ -9,6 +9,7 @@ namespace FishToolsDEMO
     public class TImerTestDisplay : MonoBehaviour
     {
         public Text text;
+        public  Text interval_Text;
         public float duration;
         public int loopTimes;
         public int intervalTime;
@@ -81,6 +82,7 @@ namespace FishToolsDEMO
             string forwardTime = timer.GetForwardTime().ToString();
             string resultTime = timer.GetResultTime().ToString();
             text.text = $"正向时间: {forwardTime} + 反向时间: {resultTime}";
+            interval_Text.text = $"间插事件: {timer.IntervalIndex}";
         }
 
 

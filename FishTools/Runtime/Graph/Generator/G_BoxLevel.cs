@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -38,14 +39,15 @@ namespace FishTools.Graph
         [DrawButton(true)]
         private void Generate()
         {
-            graphUI.AfterClear(() => { GenerateFunc(null); });
+            StartCoroutine(Generate_Coroutine());
         }
 
-        public void GenerateFunc(Action action)
+        public IEnumerator Generate_Coroutine()
         {
+            yield return graphUI.Clear();
+
             UnityEngine.Random.InitState(seed);
             allNodes.Clear();
-
 
             // ================= 生成节点 =================
             // 生成首层（起始点）
@@ -140,13 +142,9 @@ namespace FishTools.Graph
             SetHorizontal();
 
             LimitNodes();
-
             // ================= 初始化连线=================
-            FMonitor.Create(true).OnComplete(() =>
-            {
-                graphUI.InitLines(connections);
-                action?.Invoke();
-            });
+            yield return null;
+            graphUI.InitLines(connections);
         }
 
         /// <summary>

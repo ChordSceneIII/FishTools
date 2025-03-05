@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 206170908}
   - component: {fileID: 206170913}
   - component: {fileID: 206170914}
+  - component: {fileID: 206170915}
   m_Layer: 5
   m_Name: Graph
   m_TagString: Untagged
@@ -228,8 +229,11 @@ MonoBehaviour:
   level_distance: 450
   node_distance: 200
   node_weight_distance: 150
+  setHorizontal: 0
   randomPosRange: {x: 100, y: 50}
-  IsHorizontal: 0
+  limitInParent: 0
+  parentRect: {fileID: 0}
+  padding: 50
   _graphUI: {fileID: 206170906}
 --- !u!222 &206170910
 CanvasRenderer:
@@ -283,11 +287,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _graphUI: {fileID: 0}
   pointer_sprite: {fileID: 21300000, guid: 98cc05eacba2f0c47bffe4d4a88fe48c, type: 3}
+  isCompleted: 0
   available_list: 
   visited_list: 
   current_node: {fileID: 0}
-  isCompleted: 0
   _pointer: {fileID: 0}
+  usePointerClick: 1
 --- !u!114 &206170914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +316,23 @@ MonoBehaviour:
   minPos: {x: 637.92706, y: 194.17679}
   maxPos: {x: 1472.073, y: 1101}
   virtualCenter: {x: 1005, y: 597.5884}
+--- !u!114 &206170915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206170904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb5bb9a6ddcba14e95e60568565df41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preview_connection: {fileID: -3987929272041567121, guid: 7de19a60668eb89489338c570bf2a797, type: 3}
+  weight: 1
+  start: {fileID: 0}
+  end: {fileID: 0}
+  _graphUI: {fileID: 0}
 --- !u!1 &300275988
 GameObject:
   m_ObjectHideFlags: 0
