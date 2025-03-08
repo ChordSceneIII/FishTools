@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5670ba7cd6092b4cb026faf271eb78b, type: 3}
+  m_Name: Graph
+  m_EditorClassIdentifier: 
+  connections:
+    _pairs:
+    - key:
+        from: 1
+        to: 3
+      value: 3
+    - key:
+        from: 2
+        to: 3
+      value: 1
+    - key:
+        from: 2
+        to: 1
+      value: 1
+    - key:
+        from: 5
+        to: 3
+      value: 1
+    - key:
+        from: 3
+        to: 5
+      value: 1
+    - key:
+        from: 1
+        to: 2
+      value: 1
+    - key:
+        from: 3
+        to: 4
+      value: 1
+    - key:
+        from: 4
+        to: 5
+      value: 1
