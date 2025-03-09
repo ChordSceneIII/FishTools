@@ -50,7 +50,6 @@ namespace FishTools
             {
                 instance = this as T;
                 DontDestroyOnLoad(this.gameObject);
-
             }
             else if (instance != this)
             {

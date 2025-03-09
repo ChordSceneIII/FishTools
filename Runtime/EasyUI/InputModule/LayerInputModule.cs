@@ -57,6 +57,17 @@ namespace FishTools.EasyUI
             }
         }
 
+        protected override void Start()
+        {
+            base.Start();
+
+            //初始化，主动关闭根面板以防止顺序错误
+            if (LayerChains.Count >= 2)
+            {
+                _rootPanel.Close();
+            }
+        }
+
         public override void Process()
         {
             base.Process();
@@ -82,7 +93,7 @@ namespace FishTools.EasyUI
             }
 
             //没有面板时打开根面板
-            if (LayerChains.Count==0)
+            if (LayerChains.Count == 0)
             {
                 _rootPanel.Open();
             }

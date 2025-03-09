@@ -18,7 +18,7 @@ namespace FishTools.EasyUI
         [SerializeField] private bool cancelClose = true;
         [Label("保持首选项")] public bool keepLastSelect;
         [Label("首选项")] public Selectable firstSelect;
-        [Label("使用全局的取消按钮")] public bool useDefaultCancel = true;
+        [Label("默认取消"),Tooltip("是否使用全局配置的取消按钮")] public bool useDefaultCancel = true;
         [ConditionalField("useDefaultCancel", false)] public string cancelButton = "Cancel";
         [SerializeField, ReadOnly] private LayerPanel _lastpanel = null;
         public UnityEvent onCancelEvent = new();

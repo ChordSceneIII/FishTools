@@ -15,29 +15,15 @@ namespace FishTools.EasyUI
 
         public virtual void Repeat()
         {
-            gameObject.SetActive(!gameObject.activeSelf);
+            PanelOperation.Instance.Repeat(gameObject);
         }
         public virtual void Open()
         {
-            FMonitor.Create().OnComplete(Open_);
+            PanelOperation.Instance.Open(gameObject);
         }
         public virtual void Close()
         {
-            FMonitor.Create().OnComplete(Close_);
+            PanelOperation.Instance.Close(gameObject);
         }
-
-        private void Open_()
-        {
-            if (gameObject.activeSelf == false)
-                gameObject.SetActive(true);
-        }
-
-        private void Close_()
-        {
-            if (gameObject.activeSelf == true)
-                gameObject.SetActive(false);
-        }
-
     }
-
 }
