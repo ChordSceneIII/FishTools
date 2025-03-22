@@ -15,7 +15,6 @@ namespace FishTools.Graph
     {
         [Header("参数设置")]
         [Label("节点预制体")] public NodeUI nodeUI_prefab;
-        [Label("种子码")] public int seed;
         [Label("层数")] public int levelCount = 7;
         [Label("每层节点范围")] public Vector2 nodeCount_Range = new Vector2(3, 5);
         [Label("终点数量")] public int endNodeCount = 1;
@@ -46,7 +45,6 @@ namespace FishTools.Graph
         {
             yield return graphUI.Clear();
 
-            UnityEngine.Random.InitState(seed);
             allNodes.Clear();
 
             // ================= 生成节点 =================

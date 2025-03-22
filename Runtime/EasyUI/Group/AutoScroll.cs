@@ -54,7 +54,7 @@ namespace FishTools.EasyUI
             {
                 var delta = selected.transform.position - ScrollRect.content.TransformPoint(ScrollRect.content.rect.min);
 
-                FMonitor.Create("AutoScroll_Running", true).Delay(delayTime).Condition(() =>
+                FMonitor.Create("AutoScroll_Running").RealTime(true).Delay(delayTime).Condition(() =>
                 {
                     if ((Input.anyKey && canBreak)
                     || FishRectUtility.DecideRectDirection(selRec, scrollRec) == new Vector2(0, 0))

@@ -10,7 +10,7 @@ namespace FishTools
     /// <para> 通过调用field访问器来触发 </para>
     /// </summary>
     [Serializable]
-    public class ObserveField<T> : IObserveEvent where T : struct
+    public class ObserveField<T> : IObserveEvent
     {
         public ObserveField() { }
         public ObserveField(T value) => _field = value;

@@ -35,7 +35,7 @@ namespace FishTools
         }
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     /// <summary>
     /// 辅助类：使用字典映射实现各类型参数的绘制
     /// </summary>
@@ -52,6 +52,7 @@ namespace FishTools
             { typeof(string), (label, value) => EditorGUILayout.TextField(label, (string)value) },
             { typeof(bool), (label, value) => EditorGUILayout.Toggle(label, (bool)value) },
             { typeof(Vector3), (label, value) => EditorGUILayout.Vector3Field(label, (Vector3)value) },
+            { typeof(Vector2), (label, value) => EditorGUILayout.Vector2Field(label, (Vector2)value) },
             // 如需支持其他类型，可在此添加映射
         };
 
@@ -136,6 +137,8 @@ namespace FishTools
                                 defaultValues[i] = false;
                             else if (type == typeof(Vector3))
                                 defaultValues[i] = Vector3.zero;
+                            else if (type == typeof(Vector2))
+                                defaultValues[i] = Vector2.zero;
                         }
                         methodParameterValues[method] = defaultValues;
                     }

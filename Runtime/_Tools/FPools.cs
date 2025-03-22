@@ -16,8 +16,9 @@ namespace FishTools
         private FPool()
         { }
         private Queue<GameObject> pools_avail = new Queue<GameObject>();
-        internal Queue<GameObject> PoolsAvail => pools_avail;
+        public Queue<GameObject> PoolsAvail => pools_avail;
         [SerializeField] private List<GameObject> pools_used = new List<GameObject>();
+        public List<GameObject> PoolsUsed => pools_used;
         [Label("预制体")] public GameObject prefab;
         [Label("清理时间间隔")] public float clean_interval = 3f;
         [Label("每次销毁数量")] public float destory_every_count = 10;
@@ -156,6 +157,7 @@ namespace FishTools
                             if (PoolsAvail.Count > 0)
                                 GameObject.Destroy(PoolsAvail.Dequeue());
                         }
+                        remainingTime = clean_interval;
                     }
                 });
             }
