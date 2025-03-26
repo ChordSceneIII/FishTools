@@ -10,12 +10,12 @@ namespace FishTools
     /// </summary>
     [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public class ConditionalFieldAttribute : PropertyAttribute
+    public class ConFieldAttribute : PropertyAttribute
     {
         public string ConditionPropertyName { get; private set; }
         public object CompareValue { get; private set; }
 
-        public ConditionalFieldAttribute(string conditionPropertyName, object compareValue)
+        public ConFieldAttribute(string conditionPropertyName, object compareValue)
         {
             ConditionPropertyName = conditionPropertyName;
             CompareValue = compareValue;
@@ -23,12 +23,12 @@ namespace FishTools
     }
 
 #if UNITY_EDITOR
-    [CustomPropertyDrawer(typeof(ConditionalFieldAttribute))]
+    [CustomPropertyDrawer(typeof(ConFieldAttribute))]
     public class ConditionalFieldDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            ConditionalFieldAttribute conditionalAttribute = (ConditionalFieldAttribute)attribute;
+            ConFieldAttribute conditionalAttribute = (ConFieldAttribute)attribute;
 
             // 获取目标字段的值
             SerializedProperty conditionProperty = property.serializedObject.FindProperty(conditionalAttribute.ConditionPropertyName);
@@ -56,7 +56,7 @@ namespace FishTools
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            ConditionalFieldAttribute conditionalAttribute = (ConditionalFieldAttribute)attribute;
+            ConFieldAttribute conditionalAttribute = (ConFieldAttribute)attribute;
             SerializedProperty conditionProperty = property.serializedObject.FindProperty(conditionalAttribute.ConditionPropertyName);
 
             // 如果字段不存在，返回 HelpBox 的高度

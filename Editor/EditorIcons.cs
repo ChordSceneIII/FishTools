@@ -13,7 +13,7 @@ using System.IO;
 //https://gist.github.com/MattRix/c1f7840ae2419d8eb2ec0695448d4321
 public class EditorIcons : EditorWindow
 {
-    [MenuItem("FishTools/Editor Icons %e", priority = -1001)]
+    [MenuItem("Tools/编辑器图标浏览 ", priority = -1001)]
     public static void EditorIconsOpen()
     {
 #if UNITY_2018

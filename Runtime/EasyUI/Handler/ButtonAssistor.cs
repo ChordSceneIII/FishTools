@@ -14,10 +14,10 @@ namespace FishTools.EasyUI
         private Button btn;
         public Button Btn => FishUtility.LazyGet(this, ref btn);
         [Label("Key/Button")] public bool isKey = true;
-        [ConditionalField("isKey", false)] public string button;
-        [ConditionalField("isKey", true)] public KeyCode key;
+        [ConField("isKey", false)] public string button;
+        [ConField("isKey", true)] public KeyCode key;
         [Label("长按")] public bool isLongPress;
-        [Label("长按动画"), ConditionalField("isLongPress", true)] public AnimationClip clip;
+        [Label("长按动画"), ConField("isLongPress", true)] public AnimationClip clip;
 
         protected override void Update()
         {

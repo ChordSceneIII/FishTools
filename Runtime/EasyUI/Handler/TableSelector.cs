@@ -10,7 +10,7 @@ namespace FishTools.EasyUI
         public Transform guideButtons;
         public Transform contents;
         public bool keepPreference = false;
-        [ConditionalField("keepPreference", true)] public int preferenceIndex;
+        [ConField("keepPreference", true)] public int preferenceIndex;
         [ReadOnly, SerializeField] private int _curIndex = 0;
         [ReadOnly] public List<GameObject> objs;
         [ReadOnly] public List<Button> buttons;

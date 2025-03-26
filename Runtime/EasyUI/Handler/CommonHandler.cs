@@ -28,16 +28,16 @@ namespace FishTools.EasyUI
 
         public EventType eventType = EventType.None;
 
-        [ConditionalField("eventType", EventType.Hover)] public UnityEvent hoverEvent;
-        [ConditionalField("eventType", EventType.OutHover)] public UnityEvent outHoverEvent;
-        [ConditionalField("eventType", EventType.ClickInside)] public UnityEvent clickInsideEvent;
-        [ConditionalField("eventType", EventType.ClickOutside)] public UnityEvent clickOutsideEvent;
-        [ConditionalField("eventType", EventType.Enter)] public UnityEvent enterEvent;
-        [ConditionalField("eventType", EventType.Exit)] public UnityEvent exitEvent;
-        [ConditionalField("eventType", EventType.ChildEnter)] public UnityEvent childEnterEvent;
-        [ConditionalField("eventType", EventType.ChildExit)] public UnityEvent childExitEvent;
-        [ConditionalField("eventType", EventType.OnInteractable)] public UnityEvent onInteractableEvent;
-        [ConditionalField("eventType", EventType.OffInteractable)] public UnityEvent offInteractableEvent;
+        [ConField("eventType", EventType.Hover)] public UnityEvent hoverEvent;
+        [ConField("eventType", EventType.OutHover)] public UnityEvent outHoverEvent;
+        [ConField("eventType", EventType.ClickInside)] public UnityEvent clickInsideEvent;
+        [ConField("eventType", EventType.ClickOutside)] public UnityEvent clickOutsideEvent;
+        [ConField("eventType", EventType.Enter)] public UnityEvent enterEvent;
+        [ConField("eventType", EventType.Exit)] public UnityEvent exitEvent;
+        [ConField("eventType", EventType.ChildEnter)] public UnityEvent childEnterEvent;
+        [ConField("eventType", EventType.ChildExit)] public UnityEvent childExitEvent;
+        [ConField("eventType", EventType.OnInteractable)] public UnityEvent onInteractableEvent;
+        [ConField("eventType", EventType.OffInteractable)] public UnityEvent offInteractableEvent;
 
         [ReadOnly, SerializeField] private bool isInside = false;
         private List<Transform> childs;

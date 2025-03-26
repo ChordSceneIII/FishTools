@@ -17,8 +17,8 @@ namespace FishTools.Graph
         [SerializeField] private float lineThickness = 10f;
         [SerializeField] private float offsetDistance = 200f;
         [Label("持续更新位置")] public bool updatePos = false;
-        [ConditionalField("updatePos", true)] public Transform start;
-        [ConditionalField("updatePos", true)] public Transform end;
+        [ConField("updatePos", true)] public Transform start;
+        [ConField("updatePos", true)] public Transform end;
         [ReadOnly] public Connection connection = default;
         public UnityEvent onFlagEvent;
         public UnityEvent offFlagEvent;

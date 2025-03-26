@@ -26,8 +26,8 @@ namespace FishTools.Graph
         [Label("横置")] public bool setHorizontal = false;
         [Label("随机位移范围")] public Vector2 randomPosRange = new Vector2();
         [Label("限制在父布局中")] public bool limitInParent = false;
-        [ConditionalField("limitInParent", true)] public RectTransform parentRect;
-        [ConditionalField("limitInParent", true)] public float padding = 50;
+        [ConField("limitInParent", true)] public RectTransform parentRect;
+        [ConField("limitInParent", true)] public float padding = 50;
 
         [Header("状态详情")]
         [ReadOnly, SerializeField] private GraphUI _graphUI;

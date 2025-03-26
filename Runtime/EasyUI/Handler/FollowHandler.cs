@@ -20,9 +20,9 @@ namespace FishTools.EasyUI
         }
 
         [Label("跟随")] public bool isFollow = false;
-        [Label("目标"), ConditionalField("isFollow", true)] public Transform targetTrans;//跟随对象
-        [Label("偏移"), ConditionalField("isFollow", true)] public Vector3 offsetVector;
-        [Label("平滑"), ConditionalField("isFollow", true), Range(0f, 1)] public float smoothTime = 0.3f;
+        [Label("目标"), ConField("isFollow", true)] public Transform targetTrans;//跟随对象
+        [Label("偏移"), ConField("isFollow", true)] public Vector3 offsetVector;
+        [Label("平滑"), ConField("isFollow", true), Range(0f, 1)] public float smoothTime = 0.3f;
         [Label("拖拽")] public bool drag = false;
         [Label("限制在屏幕范围内")] public bool keepinScreen = false;
         private Canvas canvas;

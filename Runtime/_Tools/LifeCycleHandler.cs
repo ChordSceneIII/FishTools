@@ -28,16 +28,16 @@ namespace FishTools
 
         public LifeCycleEvents activeEvents = LifeCycleEvents.None;
 
-        [ConditionalField("activeEvents", LifeCycleEvents.Awake)] public UnityEvent onAwake;
-        [ConditionalField("activeEvents", LifeCycleEvents.Start)] public UnityEvent onStart;
-        [ConditionalField("activeEvents", LifeCycleEvents.Update)] public UnityEvent onUpdate;
-        [ConditionalField("activeEvents", LifeCycleEvents.FixedUpdate)] public UnityEvent onFixedUpdate;
-        [ConditionalField("activeEvents", LifeCycleEvents.LateUpdate)] public UnityEvent onLateUpdate;
-        [ConditionalField("activeEvents", LifeCycleEvents.OnEnable)] public UnityEvent onEnable;
+        [ConField("activeEvents", LifeCycleEvents.Awake)] public UnityEvent onAwake;
+        [ConField("activeEvents", LifeCycleEvents.Start)] public UnityEvent onStart;
+        [ConField("activeEvents", LifeCycleEvents.Update)] public UnityEvent onUpdate;
+        [ConField("activeEvents", LifeCycleEvents.FixedUpdate)] public UnityEvent onFixedUpdate;
+        [ConField("activeEvents", LifeCycleEvents.LateUpdate)] public UnityEvent onLateUpdate;
+        [ConField("activeEvents", LifeCycleEvents.OnEnable)] public UnityEvent onEnable;
 
-        [ConditionalField("activeEvents", LifeCycleEvents.OnDisable)] public UnityEvent onDisable;
-        [ConditionalField("activeEvents", LifeCycleEvents.Destroy)] public UnityEvent onDestroy;
-        [ConditionalField("activeEvents", LifeCycleEvents.ApplicationQuit)] public UnityEvent onApplicationQuit;
+        [ConField("activeEvents", LifeCycleEvents.OnDisable)] public UnityEvent onDisable;
+        [ConField("activeEvents", LifeCycleEvents.Destroy)] public UnityEvent onDestroy;
+        [ConField("activeEvents", LifeCycleEvents.ApplicationQuit)] public UnityEvent onApplicationQuit;
 
         private void Awake()
         {

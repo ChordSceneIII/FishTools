@@ -49,7 +49,7 @@ namespace FishTools
         // 实际字典 (用于所有增删改查操作)
         private Dictionary<TKey, TValue> _dict = new Dictionary<TKey, TValue>();
 
-        [SerializeField] private bool _isRepeatKey = false;
+        [SerializeField] internal bool _isRepeatKey = false;
 
         //序列化之前检查键的唯一性
         public void OnBeforeSerialize()
@@ -328,6 +328,7 @@ namespace FishTools
         private const float KeyValueRatio = 0.45f;
         private const float ButtonWidth = 20f;
         private const float LineSpacing = 2f;
+        private static Dictionary<string, bool> foldoutStates = new Dictionary<string, bool>();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -343,6 +344,10 @@ namespace FishTools
                 height = EditorGUIUtility.singleLineHeight
             };
 
+            // 处理折叠状态
+            string stateKey = property.propertyPath;
+            if (!foldoutStates.ContainsKey(stateKey)) foldoutStates[stateKey] = false;
+
             // 显示重复键警告
             if (isRepeatKeyProp.boolValue)
             {
@@ -350,70 +355,91 @@ namespace FishTools
                 currentRect.y += currentRect.height + LineSpacing;
             }
 
-            // 绘制列表标签
-            EditorGUI.LabelField(currentRect, label);
-            currentRect.y += currentRect.height + LineSpacing;
+            // 绘制折叠箭头
+            foldoutStates[stateKey] = EditorGUI.Foldout(
+                new Rect(currentRect)
+                {
+                    width = EditorGUIUtility.labelWidth,
+                    height = EditorGUIUtility.singleLineHeight
+                },
+                foldoutStates[stateKey],
+                label
+            );
+            currentRect.y += EditorGUIUtility.singleLineHeight + LineSpacing;
 
-            // 绘制每个键值对
-            for (int i = 0; i < pairsProp.arraySize; i++)
+            // 展开时绘制内容
+            if (foldoutStates[stateKey])
             {
-                SerializedProperty pairProp = pairsProp.GetArrayElementAtIndex(i);
-                DrawKeyValuePair(ref currentRect, pairsProp, pairProp, i);
-            }
+                // 绘制每个键值对
+                for (int i = 0; i < pairsProp.arraySize; i++)
+                {
+                    SerializedProperty pairProp = pairsProp.GetArrayElementAtIndex(i);
+                    DrawKeyValuePair(ref currentRect, pairsProp, pairProp, i);
+                }
 
-            // 添加新元素按钮
-            DrawAddButton(ref currentRect, pairsProp);
+                // 添加新元素按钮
+                DrawAddButton(ref currentRect, pairsProp);
+            }
 
             EditorGUI.EndProperty();
         }
 
         private void DrawKeyValuePair(ref Rect rect, SerializedProperty listProp, SerializedProperty pairProp, int index)
         {
-            Rect lineRect = new Rect(rect)
+            // 获取键值对的属性
+            SerializedProperty keyProp = pairProp.FindPropertyRelative("key");
+            SerializedProperty valueProp = pairProp.FindPropertyRelative("value");
+
+            // 计算总高度（键和值的高度之和）
+            float keyHeight = EditorGUI.GetPropertyHeight(keyProp, true);
+            float valueHeight = EditorGUI.GetPropertyHeight(valueProp, true);
+            float totalHeight = keyHeight + valueHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            // 主区域背景
+            Rect bgRect = new Rect(rect) { height = totalHeight };
+            EditorGUI.DrawRect(bgRect, new Color(0.15f, 0.15f, 0.15f, 0.1f));
+
+            // 索引标签
+            Rect indexRect = new Rect(bgRect)
             {
+                width = 30f,
                 height = EditorGUIUtility.singleLineHeight
             };
-
-            // 元素索引标签
-            Rect indexRect = new Rect(lineRect)
-            {
-                width = 30f
-            };
             EditorGUI.LabelField(indexRect, $"[{index}]");
-            lineRect.x += indexRect.width;
-            lineRect.width -= indexRect.width + ButtonWidth;
 
-            // Key/Value 水平布局
-            float keyWidth = lineRect.width * KeyValueRatio;
-            float valueWidth = lineRect.width - keyWidth;
-
-            // Key 字段
-            Rect keyRect = new Rect(lineRect)
+            // 删除按钮（固定在右侧）
+            Rect deleteButtonRect = new Rect(bgRect)
             {
-                width = keyWidth - LineSpacing
+                x = bgRect.xMax - ButtonWidth,
+                width = ButtonWidth,
+                height = EditorGUIUtility.singleLineHeight
             };
-            EditorGUI.PropertyField(keyRect, pairProp.FindPropertyRelative("key"), GUIContent.none);
-
-            // Value 字段
-            Rect valueRect = new Rect(keyRect)
-            {
-                x = keyRect.x + keyRect.width + LineSpacing,
-                width = valueWidth - LineSpacing
-            };
-            EditorGUI.PropertyField(valueRect, pairProp.FindPropertyRelative("value"), GUIContent.none);
-
-            // 删除按钮
-            Rect buttonRect = new Rect(lineRect)
-            {
-                x = lineRect.x + lineRect.width,
-                width = ButtonWidth
-            };
-            if (GUI.Button(buttonRect, "-"))
+            if (GUI.Button(deleteButtonRect, "-"))
             {
                 listProp.DeleteArrayElementAtIndex(index);
             }
 
-            rect.y += lineRect.height + LineSpacing;
+            // 内容区域（排除索引和按钮空间）
+            Rect contentRect = new Rect(bgRect)
+            {
+                x = indexRect.xMax + 2f,
+                width = bgRect.width - indexRect.width - deleteButtonRect.width - 4f
+            };
+
+            // 绘制键（自动换行）
+            Rect keyRect = new Rect(contentRect) { height = keyHeight };
+            EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none, true);
+
+            // 绘制值（自动换行）
+            Rect valueRect = new Rect(contentRect)
+            {
+                y = keyRect.yMax + EditorGUIUtility.standardVerticalSpacing,
+                height = valueHeight
+            };
+            EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none, true);
+
+            // 更新总高度
+            rect.y += bgRect.height + EditorGUIUtility.standardVerticalSpacing;
         }
 
         private void DrawAddButton(ref Rect rect, SerializedProperty listProp)
@@ -437,21 +463,28 @@ namespace FishTools
             float height = 0f;
 
             // 错误提示高度
-            SerializedProperty isRepeatKeyProp = property.FindPropertyRelative("_isRepeatKey");
-            if (isRepeatKeyProp.boolValue)
-            {
+            if (property.FindPropertyRelative("_isRepeatKey").boolValue)
                 height += EditorGUIUtility.singleLineHeight + LineSpacing;
-            }
 
-            // 标题高度
+            // 折叠标题高度
             height += EditorGUIUtility.singleLineHeight + LineSpacing;
 
-            // 每个元素的高度
-            SerializedProperty pairsProp = property.FindPropertyRelative("_pairs");
-            height += pairsProp.arraySize * (EditorGUIUtility.singleLineHeight + LineSpacing);
+            // 展开状态的高度
+            string stateKey = property.propertyPath;
+            if (foldoutStates.TryGetValue(stateKey, out bool isExpanded) && isExpanded)
+            {
+                SerializedProperty pairsProp = property.FindPropertyRelative("_pairs");
+                for (int i = 0; i < pairsProp.arraySize; i++)
+                {
+                    SerializedProperty pairProp = pairsProp.GetArrayElementAtIndex(i);
+                    float keyHeight = EditorGUI.GetPropertyHeight(pairProp.FindPropertyRelative("key"), true);
+                    float valueHeight = EditorGUI.GetPropertyHeight(pairProp.FindPropertyRelative("value"), true);
+                    height += keyHeight + valueHeight + EditorGUIUtility.standardVerticalSpacing * 2;
+                }
 
-            // 添加按钮高度
-            height += EditorGUIUtility.singleLineHeight;
+                // 添加按钮高度
+                height += EditorGUIUtility.singleLineHeight;
+            }
 
             return height;
         }
