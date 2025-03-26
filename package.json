@@ -1,8 +1,8 @@
 {
     "name": "com.fish.tools",
     "displayName": "FishTools",
-    "description": "FishTools plugins for fast development",
-    "version": "0.0.1",
+    "description": "快速构建游戏框架工具",
+    "version": "0.0.2",
     "unity": "2022.3",
     "unityRelease": "30f1",
     "keywords": [
